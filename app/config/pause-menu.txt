@@ -1,0 +1,10 @@
+img menu ./assets/textures/menu.png
+img resume ./assets/textures/resume.png
+img new-game ./assets/textures/new-game.png
+img exit ./assets/textures/exit.png
+
+shader plain ./assets/shaders/plain-vertex-shader.glsl ./assets/shaders/plain-fragment-shader.glsl
+shader texture ./assets/shaders/texture-vertex-shader.glsl ./assets/shaders/texture-fragment-shader.glsl
+shader morphing ./assets/shaders/morphing-vertex-shader.glsl ./assets/shaders/plain-fragment-shader.glsl
+
+entities ./config/pause-menu-entities.txt

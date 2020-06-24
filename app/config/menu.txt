@@ -1,0 +1,8 @@
+img menu ./assets/textures/menu.png
+img new-game ./assets/textures/new-game.png
+img exit ./assets/textures/exit.png
+
+shader plain-with-light ./assets/shaders/plain-with-light-vertex-shader.glsl ./assets/shaders/plain-with-light-fragment-shader.glsl
+shader texture-with-light ./assets/shaders/texture-with-light-vertex-shader.glsl ./assets/shaders/texture-with-light-fragment-shader.glsl
+
+entities ./config/menu-entities.txt
