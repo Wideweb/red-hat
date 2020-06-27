@@ -20,6 +20,8 @@ img boy ./assets/textures/boy.png
 img dog ./assets/textures/dog.png
 img mom ./assets/textures/mom.png
 img character ./assets/textures/characters-r2.png
+img skelet ./assets/textures/skelet.png
+img tree-crown ./assets/textures/tree-crown.png
 
 sound background ./assets/music/background.wav
 sound rain ./assets/music/rain.wav
@@ -27,6 +29,9 @@ sound thunder-blast ./assets/music/thunder-blast.wav
 sound incoming ./assets/music/incoming.wav
 sound horror ./assets/music/horror.wav
 sound bark ./assets/music/bark.wav
+sound dog-whining ./assets/music/dog-whining.wav
+sound electricity ./assets/music/electricity.wav
+sound run ./assets/music/run.wav
 
 shader plain ./assets/shaders/plain-vertex-shader.glsl ./assets/shaders/plain-fragment-shader.glsl
 shader plain-with-light ./assets/shaders/plain-with-light-vertex-shader.glsl ./assets/shaders/plain-with-light-fragment-shader.glsl

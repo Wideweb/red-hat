@@ -9,6 +9,8 @@ GameScreen::GameScreen() {}
 void GameScreen::load(Context *context) {
     context->load("./config/game.txt");
 
+    m_RainActive = false;
+
     auto &app = Engine::Application::get();
 
     {
@@ -38,15 +40,25 @@ void GameScreen::load(Context *context) {
                     new Engine::SequenceTask({
                         new Engine::ControllerTask(Engine::KeyCode::A),
                         new Engine::MoveLeftTask(),
+                        new Engine::RunAnimationTask()
                     }),
 
                     new Engine::SequenceTask({
                         new Engine::ControllerTask(Engine::KeyCode::D),
                         new Engine::MoveRightTask(),
+                        new Engine::RunAnimationTask()
                     }),
+
+                    new Engine::Fail(new Engine::SequenceTask({
+                        new Engine::Inverter(new Engine::OnGroundTask()),
+                        new Engine::StopAnimationTask()
+                    }))
                 }),
 
-                new Engine::WaitTask()
+                new Engine::ParallelTask({
+                    new Engine::StopAnimationTask(),
+                    new Engine::WaitTask(),
+                })
             })
         );
         // clang-format on
@@ -374,10 +386,10 @@ void GameScreen::load(Context *context) {
     }
 
     m_Actions.add(new StopSoundAction(1050, 0, "background"));
-    m_Actions.add(new PlaySoundAction(1050, 0, "horror", 1.0,
+    m_Actions.add(new PlaySoundAction(1050, 0, "horror", 0.4,
                                       Engine::SoundBuffer::Properties::Looped));
     m_Actions.add(new FirstWolfAction(1500, 0));
-    m_Actions.add(new PlaySoundAction(1500, 0, "incoming", 1.0,
+    m_Actions.add(new PlaySoundAction(1500, 0, "incoming", 0.7,
                                       Engine::SoundBuffer::Properties::Looped));
     m_Actions.add(new TakeLighterAction(2100, 0));
     m_Actions.add(new WolfIsGone())
@@ -407,34 +419,41 @@ void GameScreen::load(Context *context) {
 
     m_Actions.add(new StopRainAction(3600, 0));
     m_Actions.add(new StopSoundAction(3600, 3.0, "rain"));
+
+    m_Actions.add(new GrandTransformation(4500));
+    m_Actions.add(new EndGameAction(4500, 4.0));
+
     m_Actions.init(context);
+
+    // m_Water.init(context);
 }
 
 void GameScreen::update() {
-    m_Water.update();
+    // m_Water.update();
 
     auto &input = Engine::Application::get().getInput();
 
     Engine::Vec2 pos = input.GetMousePosition();
 
     if (input.IsKeyPressed(Engine::KeyCode::Escape)) {
-        ScreenManager::get().goTo("pause");
+        ScreenManager::get().goTo("menu");
     }
 
-    if (input.IsKeyPressed(Engine::KeyCode::F)) {
-        if (m_FPressed) {
-            return;
-        }
-        m_FPressed = true;
-        bool isAactive =
-            m_FlashLight->getComponent<Engine::SpotLightComponent>()->isActive;
-        m_FlashLight->getComponent<Engine::SpotLightComponent>()->isActive =
-            !isAactive;
-        m_Player->getComponent<Engine::AttackComponent>()->isActive =
-            !isAactive;
-    } else {
-        m_FPressed = false;
-    }
+    // if (input.IsKeyPressed(Engine::KeyCode::F)) {
+    //     if (m_FPressed) {
+    //         return;
+    //     }
+    //     m_FPressed = true;
+    //     bool isAactive =
+    //         m_FlashLight->getComponent<Engine::SpotLightComponent>()->isActive;
+    //     m_FlashLight->getComponent<Engine::SpotLightComponent>()->isActive =
+    //         !isAactive;
+    //     m_Player->getComponent<Engine::AttackComponent>()->isActive =
+    //         !isAactive;
+
+    // } else {
+    //     m_FPressed = false;
+    // }
 
     if (m_Player->hasComponent<Engine::DieComponent>()) {
         ScreenManager::get().goTo("menu");
@@ -443,4 +462,11 @@ void GameScreen::update() {
     m_Actions.update();
 }
 
-void GameScreen::unload(Context *context) { context->clear(); }
+void GameScreen::unload(Context *context) {
+    m_FlashLight.reset();
+    m_Player.reset();
+    m_Actions.clear();
+    Engine::Application::get().getSound().stop();
+    Engine::Application::get().getSound().clear();
+    context->clear();
+}

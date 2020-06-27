@@ -34,7 +34,7 @@ class AppLayer : public Engine::Layer {
         m_ScreenManager->add("menu", new MenuScreen(startMenu));
         m_ScreenManager->add("game", new GameScreen());
         m_ScreenManager->add("pause", new PauseScreen(pauseMenu));
-        m_ScreenManager->goTo("title");
+        m_ScreenManager->goTo("game");
     }
 
     virtual void onUpdate() override { m_ScreenManager->update(); }
@@ -46,7 +46,7 @@ class MyApp : public Engine::Application {
   public:
     MyApp() {
         addLayer(new AppLayer());
-        // addLayer(new Engine::ImGuiLayer());
+        addLayer(new Engine::ImGuiLayer());
     }
 
     virtual ~MyApp() {}

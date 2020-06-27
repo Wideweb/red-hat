@@ -29,7 +29,7 @@ class TimeLine {
         Action &action = getCurrent();
 
         if (action.type == ActionType::PlayMusic) {
-            auto step = TimeLineStep::playSound(action.sound);
+            auto step = TimeLineStep::playSound(action.sound, action.volume);
 
             next();
             return step;

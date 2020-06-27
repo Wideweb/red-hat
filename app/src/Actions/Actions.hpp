@@ -2,9 +2,11 @@
 
 #include "ActionManager.hpp"
 
+#include "EndGameAction.hpp"
 #include "FirstWolfAction.hpp"
 #include "FlashLightAction.hpp"
 #include "GrandSun.hpp"
+#include "GrandTransformation.hpp"
 #include "RainAction.hpp"
 #include "SoundAction.hpp"
 #include "StopRainAction.hpp"

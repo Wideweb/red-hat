@@ -32,6 +32,7 @@ struct TimeLineStep {
 
     // Music
     std::string sound;
+    float volume;
 
     // Animation
     AnimationProperty property = AnimationProperty::None;
@@ -45,10 +46,11 @@ struct TimeLineStep {
         return step;
     }
 
-    static TimeLineStep playSound(const std::string &sound) {
+    static TimeLineStep playSound(const std::string &sound, float volume) {
         TimeLineStep step;
         step.action = ActionType::PlayMusic;
         step.sound = sound;
+        step.volume = volume;
         return step;
     }
 
@@ -75,6 +77,7 @@ struct Action {
 
     // Music
     std::string sound;
+    float volume;
 
     // Animation
     AnimationProperty property = AnimationProperty::None;
@@ -92,10 +95,11 @@ struct Action {
         return action;
     }
 
-    static Action playSound(const std::string &sound) {
+    static Action playSound(const std::string &sound, float volume) {
         Action action;
         action.type = ActionType::PlayMusic;
         action.sound = sound;
+        action.volume = volume;
         return action;
     }
 

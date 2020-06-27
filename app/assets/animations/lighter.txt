@@ -1,14 +1,18 @@
 timeLine 0
+sound electricity 1.0
 inactive spotLight
 gap 0.1
 active spotLight
 gap 0.1
+sound electricity 1.0
 inactive spotLight
 gap 0.1
 active spotLight
 gap 1
+sound electricity 1.0
 inactive spotLight
 gap 0.1
 active spotLight
 gap 0.5
+sound electricity 1.0
 inactive spotLight

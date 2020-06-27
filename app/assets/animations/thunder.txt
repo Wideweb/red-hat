@@ -1,6 +1,6 @@
 timeLine 0
 animation alpha 1 0.1
-sound thunder-blast
+sound thunder-blast 1.0
 animation alpha -1 0.5
 timeLine 0
 animation diffuse 1 0.1

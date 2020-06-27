@@ -21,6 +21,11 @@ void OpenGLVertexBuffer::setVertices(const std::vector<float> &vertices) {
     m_Vertices = vertices;
 }
 
+void OpenGLVertexBuffer::updateVertices(const std::vector<float> &vertices) {
+    setVertices(vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, m_Size, vertices.data());
+}
+
 void OpenGLVertexBuffer::bind() {
     glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     GL_CHECK();

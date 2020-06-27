@@ -14,7 +14,6 @@
 #include "RenderSystem.hpp"
 #include "SpotLightSystem.hpp"
 #include "SteeringSystem.hpp"
-#include "TextureSystem.hpp"
 
 #include <vector>
 
@@ -34,7 +33,6 @@ SystemStack::SystemStack() {
     m_Systems.push_back(new AnimationSystem());
     m_Systems.push_back(new LightSystem());
     m_Systems.push_back(new SpotLightSystem());
-    m_Systems.push_back(new TextureSystem());
     m_Systems.push_back(new EmitterSystem());
 }
 

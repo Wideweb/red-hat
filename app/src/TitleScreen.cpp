@@ -4,6 +4,7 @@
 TitleScreen::TitleScreen() {}
 
 void TitleScreen::load(Context *context) {
+    m_Elapsed = 0;
     context->load("./config/title.txt");
 }
 

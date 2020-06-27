@@ -8,6 +8,7 @@
 #include "SpotLightComponent.hpp"
 #include "TextureComponent.hpp"
 #include "VelocityComponent.hpp"
+
 #include "cmath"
 
 namespace Engine {
@@ -50,7 +51,8 @@ void AnimationSystem::exec(EntityManager &entities) {
             for (auto &step : steps) {
 
                 if (step.action == ActionType::PlayMusic) {
-                    sound.play(step.sound, 1.0, SoundBuffer::Properties::Once);
+                    sound.play(step.sound, step.volume,
+                               SoundBuffer::Properties::Once);
                     continue;
                 }
 

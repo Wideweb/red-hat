@@ -13,9 +13,7 @@ class GameScreen : public Screen {
     std::shared_ptr<Engine::Entity> m_Player;
     std::shared_ptr<Engine::Entity> m_FlashLight;
 
-    WaterSurface<20> m_Water;
-
-    bool m_FPressed = false;
+    // WaterSurface<50> m_Water;
 
     bool m_RainActive = false;
 

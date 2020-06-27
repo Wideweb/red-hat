@@ -63,11 +63,8 @@ class ActionManager {
 
   public:
     ActionManager() {}
-    virtual ~ActionManager() {
-        for (auto action : m_Actions) {
-            delete action;
-        }
-    }
+
+    virtual ~ActionManager() { clear(); }
 
     void init(Context *context) {
         m_Player = context->getEntity("player");
@@ -95,5 +92,13 @@ class ActionManager {
                 }
             }
         }
+    }
+
+    void clear() {
+        for (auto action : m_Actions) {
+            delete action;
+        }
+        m_Actions.clear();
+        m_Player.reset();
     }
 };

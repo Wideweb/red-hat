@@ -22,6 +22,9 @@ class RenderComponent : public Component {
 
     RenderComponent(int width, int height, Vec3 color);
 
+    RenderComponent(std::vector<float> &vertices,
+                    std::vector<uint32_t> &indexes, int width, int height);
+
     virtual void serialize(std::ostringstream &out) override {
         out << "render ";
         out << width << " ";

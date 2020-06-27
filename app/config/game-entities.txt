@@ -9,30 +9,79 @@ render 960 150 0.0 0.06 0.06
 paralaxScrolling 0
 
 entity sun
-location -900 450
+location -1700 450
 direction 1 0
 texture chickens 0 0 0.1632 0.25 32 25 1.0
 pointLight 1.0 0.6 0.6 1 0.9 0.9 0.3 0.3 0.3 0.0 0.0 1.0
 
+entity background-3
+location -1300.0  370.0
+direction -1 0
+texture background 0 0 1 1 800 275 1.0
+
+entity underground-3
+location -1300 60
+render 800 120 0.0 0.17 0.15
+
+entity front-3
+location -1300 145
+direction -1 0
+texture front 0 0 1 1 800 75 1.0
+
+entity ground-3
+location -1300 175
+collisionRect 800 50
+obstacle
+ground
+
 entity background0
-location -400.0  370.0
+location -500.0  370.0
 direction -1 0
 texture background 0 0 1 1 800 275 1.0
 
 entity underground0
-location -400 60
+location -500 60
 render 800 120 0.0 0.17 0.15
 
 entity front0
-location -400 145
+location -500 145
 direction -1 0
 texture front 0 0 1 1 800 75 1.0
 
 entity ground0
-location -400 175
+location -500 175
 collisionRect 800 50
 obstacle
 ground
+
+entity background-2
+location -100 195
+direction -1 0
+texture break 0 0 1 1 128 128 1.0
+
+entity tree-crown-2
+location -48 395
+direction -1 0
+texture tree-crown 0 0 1 1 150 75 1.0
+
+entity front-2
+location -100 100
+direction -1 0
+texture break-front 0 0 1 1 128 128 1.0
+
+entity background-1
+location 0 195
+direction 1 0
+texture break 0 0 1 1 128 128 1.0
+
+entity front-1
+location 0 100
+direction 1 0
+texture break-front 0 0 1 1 128 128 1.0
+
+entity underground-1
+location -50 18
+render 100 36 0.0 0.17 0.15
 
 entity underground1
 location 400 60
@@ -72,6 +121,11 @@ entity background3
 location 1280 260
 direction -1 0
 texture background 0 0 1 1 800 275 1.0
+
+entity tree-crown2
+location 837 378
+direction -1 0
+texture tree-crown 0 0 1 1 150 75 1.0
 
 entity front3
 location 1280 35
@@ -177,7 +231,7 @@ location 4710 60
 render 800 120 0.0 0.17 0.15
 
 entity grass0
-location -650 205
+location -1450 205
 direction -1 0
 texture environment 0.47 0.74 0.128 0.1 245 75 1.0
 
@@ -191,7 +245,7 @@ location 4800 700
 direction 1 0
 texture chickens 0 0 0.1632 0.25 32 25 1.0
 pointLight 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.3 0.0 0.4
-animation ./assets/animations/grand-sun.txt false
+animation ./assets/animations/grand-sun.txt 0
 
 entity grand-home
 location 4800 275
@@ -202,6 +256,13 @@ entity grand
 location 4650 228
 direction 1 0
 texture characters 0.5 0.5 -0.1588 0.2 54 54 1.0
+animation ./assets/animations/grand.txt 0
+
+entity grand-wolf
+location 4670 228
+direction -1 0
+texture wolf 0 0.66 0.09 0.273 206 120 0.0
+animation ./assets/animations/grand-wolf.txt 0
 
 entity dog
 inactive
@@ -212,38 +273,38 @@ texture dog 0 0 0.25 0.33 64 42 1.0
 frameAnimation 0.66 0.25 2 0.5 0.33 0.25 4 1.0
 
 entity chicken1
-location -460 225.0
+location -1260 225.0
 direction -1 0
 velocity 0 0
 texture chickens 0 0 0.1632 0.25 32 25 1.0
 frameAnimation 0.25 0.1632 5 0.7 0 0.16 3 0.35
 
 entity chicken2
-location -430 220.0
+location -1230 220.0
 direction -1 0
 velocity 0 0
 texture chickens 0 0.5 0.1632 0.25 32 25 1.0
 frameAnimation 0.25 0.1632 6 1.1 0 0.16 3 0.35
 
 entity home
-location -640 275
+location -1440 275
 direction -1 0
 texture environment 0.448 0.107 -0.126 0.15 250 140 1.0
 
 entity mom
-location -585 227
+location -1385 227
 direction 1 0
 texture mom 0 0 0.33 1.0 42 64 1.0
 
 entity mom-text
-location -520 300
+location -1320 300
 direction -1 0
 texture mom-text 0 0 0.5 1 187 92 1.0
 ignoreLight
 frame 2
 
 entity little-boy
-location -600 214
+location -1400 214
 direction -1 0
 velocity 1 0
 texture boy 0.0 0.0 0.33 1.0 50 45 1.0
@@ -258,29 +319,29 @@ ignoreLight
 frame 2
 
 entity church
-location 550 332
+location -350 332
 direction -1 0
-texture environment 0.230 0.207 0.086 0.246 200 270 0.7
+texture environment 0.230 0.207 0.086 0.246 200 270 1.0
 
 entity church-light-img
-location 440 390
+location -460 390
 direction 1 0
 texture light 0 0 1 1 800 500 0.8
 ignoreLight
 
 entity church-light
-location 195 600
+location -705 600
 direction 1 0
 texture chickens 0 0 0.1632 0.25 32 25 1.0
 spotLight 0.0 0.0 0.0 0.7 0.5 0.4 0.3 0.3 0.2 0.1 0.0 0.25 1.0 -0.83 1.0 0.8
 
 entity grand-father
-location 530 225
+location -370 225
 direction -1 0
 texture characters 0.6888 0.26 0.1588 0.2 54 54 1.0
 
 entity grand-father-text
-location 590 265
+location -310 265
 direction -1 0
 texture grand-father-text 0 0 1 1 187 46 1.0
 ignoreLight
@@ -297,34 +358,67 @@ direction -1 0
 velocity 0 0
 texture bodies 0 0 1 1 512 32 1.0
 
-entity wood
-inactive
-location 0 209
+entity stone1
+location 200 215
 velocity 0 0
 direction -1 0
-rigitBody 0.5
-collisionRect 100 20
-texture environment 0.558 0.7 0.068 0.04 120 35 1.0
+collisionRect 20 26
+obstacle
+ground
+texture environment 0.753 0.685 0.023 0.035 50 45 1.0
+
+entity stone2
+location 280 215
+velocity 0 0
+direction -1 0
+collisionRect 24 14
+obstacle
+ground
+texture environment 0.7 0.685 0.017 0.035 40 45 1.0
+
+entity stone3
+location 375 206
+velocity 0 0
+direction -1 0
+collisionRect 14 18
+obstacle
+ground
+texture environment 0.78 0.7 0.01 0.02 25 25 1.0
+
+entity wood
+location -44 212
+velocity 0 0
+direction -1 0
+collisionRect 170 20
+obstacle
+ground
+texture environment 0.558 0.7 0.068 0.04 200 50 1.0
+
+entity skelet
+location -27 100
+direction -1 0
+texture skelet 0 0 1 1 64 64 1.0
 
 entity player
-location -100 225
+location -930 225
 direction -1 0
 velocity 0 0
 collisionRect 14 50
 rigitBody 0.5
 texture character 0 0 0.33 1.0 42 64 1.0
 frameAnimation 0 0.33 1 0.35 0 0.33 3 0.35
-camera -800 5000 -400
+camera -1600 5000 -400
 pointLight 0.0 0.0 0.0 0.8 0.5 0.4 0.0 0.0 0.0 1.0 0.0 0.0
 group player
 attack 0 -200 700 400
+animation ./assets/animations/character-steps.txt 0
 
 entity player-flashlight
 inactive
 parent player
 location 6 -6
 spotLight 0.0 0.0 0.0 0.7 0.5 0.4 0.3 0.3 0.2 0.0 0.0 0.3 1.0 0.1 1.0 0.85
-animation ./assets/animations/lighter.txt false
+animation ./assets/animations/lighter.txt 0
 
 entity flashlight
 location 2100 100
@@ -338,7 +432,7 @@ velocity 2.7 0
 collisionRect 80 40
 rigitBody 0.5
 texture wolf 0 0 0.09 0.273 206 120 1.0
-frameAnimation 0.37 0.0898 10 2 0.03 0.1 5 0.5
+frameAnimation 0.37 0.0898 10 2 0.03 0.098 5 0.5
 pointLight 0.0 0.0 0.0 1.0 0.8 0.7 0.0 0.0 0.0 -298 0.0 300
 group enemy
 attack -50 -25 100 50
@@ -351,7 +445,7 @@ velocity 3 0
 collisionRect 50 20
 rigitBody 0.5
 texture wolf 0 0 0.09 0.273 144 84 1.0
-frameAnimation 0.37 0.0898 10 1.5 0.03 0.1 5 0.5
+frameAnimation 0.37 0.0898 10 1.5 0.03 0.098 5 0.5
 
 entity wolf2
 inactive
@@ -361,7 +455,7 @@ velocity 3 0
 collisionRect 50 20
 rigitBody 0.5
 texture wolf 0 0 0.09 0.273 144 84 1.0
-frameAnimation 0.37 0.0898 10 1.5 0.03 0.1 5 0.5
+frameAnimation 0.37 0.0898 10 1.5 0.03 0.098 5 0.5
 
 entity wolf3
 inactive
@@ -371,93 +465,114 @@ velocity 1 0
 collisionRect 50 20
 rigitBody 0.5
 texture wolf 0 0 0.09 0.273 144 84 1.0
-frameAnimation 0.37 0.0898 10 2 0.03 0.1 5 0.5
+frameAnimation 0.37 0.0898 10 2 0.03 0.098 5 0.5
 
 entity paralaxFront1
-location -360 300
+location -1760 300
 direction -1 0
 texture environment 0.55 0.15 0.018 0.43 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
 entity paralaxFront2
-location -60 300
+location -1560 300
 direction -1 0
 texture environment 0.47 0.15 0.033 0.432 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
 entity paralaxFront3
-location 0 300
+location -1500 300
 direction -1 0
 texture environment 0.5 0.15 0.013 0.432 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
 entity paralaxFront4
-location 900 300
+location -200 300
 direction -1 0
 texture environment 0.55 0.15 0.018 0.43 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
 entity paralaxFront5
-location 1500 300
+location 400 300
 direction -1 0
 texture environment 0.47 0.15 0.033 0.432 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
 entity paralaxFront6
-location 1700 300
+location 500 300
 direction -1 0
 texture environment 0.5 0.15 0.013 0.432 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
 entity paralaxFront7
-location 2400 300
+location 900 300
 direction -1 0
 texture environment 0.55 0.15 0.018 0.43 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
 entity paralaxFront8
-location 3500 300
+location 1500 300
 direction -1 0
 texture environment 0.47 0.15 0.033 0.432 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
 entity paralaxFront9
-location 3700 300
+location 1700 300
 direction -1 0
 texture environment 0.5 0.15 0.013 0.432 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
 entity paralaxFront10
+location 2400 300
+direction -1 0
+texture environment 0.55 0.15 0.018 0.43 60 800 1.0
+material 0 0 0 0
+paralaxScrolling 2
+
+entity paralaxFront11
+location 3500 300
+direction -1 0
+texture environment 0.47 0.15 0.033 0.432 60 800 1.0
+material 0 0 0 0
+paralaxScrolling 2
+
+entity paralaxFront12
+location 3700 300
+direction -1 0
+texture environment 0.5 0.15 0.013 0.432 60 800 1.0
+material 0 0 0 0
+paralaxScrolling 2
+
+entity paralaxFront13
 location 4700 300
 direction -1 0
 texture environment 0.5 0.15 0.013 0.432 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
-entity paralaxFront11
+entity paralaxFront14
 location 6700 300
 direction -1 0
 texture environment 0.55 0.15 0.018 0.43 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
-entity paralaxFront12
+entity paralaxFront15
 location 7300 300
 direction -1 0
 texture environment 0.47 0.15 0.033 0.432 60 800 1.0
 material 0 0 0 0
 paralaxScrolling 2
 
-entity paralaxFront13
+entity paralaxFront16
 location 7360 300
 direction -1 0
 texture environment 0.5 0.15 0.013 0.432 60 800 1.0

@@ -58,8 +58,12 @@ AnimationScene AnimationLoader::load(const std::string &path) {
 
         if (attribute == "sound") {
             std::string sound;
+            float volume;
+
             in >> sound;
-            timeLines.back().add(Action::playSound(sound));
+            in >> volume;
+
+            timeLines.back().add(Action::playSound(sound, volume));
         }
 
         if (attribute == "active") {

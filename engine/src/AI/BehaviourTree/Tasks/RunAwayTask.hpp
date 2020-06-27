@@ -35,6 +35,8 @@ class RunAwayTask : public Task {
 
         if (!entity->hasComponent<RunningAwayComponent>()) {
             entity->addComponent<RunningAwayComponent>();
+            Application::get().getSound().play("dog-whining", 1.0,
+                                               SoundBuffer::Properties::Once);
         }
 
         if (dx * sign < distance) {

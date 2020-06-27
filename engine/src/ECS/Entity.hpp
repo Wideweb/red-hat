@@ -32,14 +32,13 @@ class Entity {
     bool isActive = true;
 
     Entity(const std::string name) : m_Name(name) {}
-    virtual ~Entity() = default;
+    virtual ~Entity() {
+        m_Components.clear();
+        m_ComponentMap.clear();
+    };
 
     template <typename T, typename... TArgs>
     std::shared_ptr<T> addComponent(TArgs &&... args) {
-        if (m_Name == "little-boy") {
-            float a = 1;
-        }
-
         std::shared_ptr<T> component;
         component.reset(new T(std::forward<TArgs>(args)...));
         m_Components.push_back(component);
