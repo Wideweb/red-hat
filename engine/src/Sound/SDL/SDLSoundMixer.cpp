@@ -1,5 +1,7 @@
 #include "SDLSoundMixer.hpp"
+
 #include <iostream>
+#include <stdexcept>
 
 namespace Engine {
 

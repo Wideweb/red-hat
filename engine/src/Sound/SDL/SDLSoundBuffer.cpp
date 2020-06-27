@@ -1,5 +1,7 @@
 #include "SDLSoundBuffer.hpp"
 
+#include <stdexcept>
+
 namespace Engine {
 
 SDLSoundBuffer::SDLSoundBuffer(const std::string &path,
