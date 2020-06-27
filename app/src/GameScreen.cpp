@@ -410,7 +410,7 @@ void GameScreen::load(Context *context) {
 
     m_Actions.add(new WolfsAction(3200, 0));
 
-    m_Actions.add(new ThunderAction(3600, 0))
+    m_Actions.add(new ThunderAction(3550, 0))
         ->then(new StopSoundAction(0, 0, "horror"))
         ->then(new StopSoundAction(0, 0, "incoming"))
         ->then(new PlaySoundAction(0, 0, "background", 1.0,

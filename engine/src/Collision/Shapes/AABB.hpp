@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math.hpp"
+#include <algorithm>
 #include <vector>
 
 namespace Engine {
