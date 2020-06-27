@@ -52,7 +52,7 @@ void GameScreen::load(Context *context) {
                     new Engine::Fail(new Engine::SequenceTask({
                         new Engine::Inverter(new Engine::OnGroundTask()),
                         new Engine::StopAnimationTask()
-                    }))
+                    })),
                 }),
 
                 new Engine::ParallelTask({
