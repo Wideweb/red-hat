@@ -2,13 +2,13 @@
 layout(location = 0) in vec3 a_position;
 layout(location = 1) in vec2 a_texCoord;
 
-uniform mat2x3 model;
-uniform mat2x3 texture_model;
+uniform mat4 model;
+uniform mat4 texture_model;
 
 out vec2 TexCoord;
 
 void main() {
-    vec2 pos = vec3(a_position.xy, 1.0f) * model;
-    gl_Position = vec4(pos, a_position.z, 1.0f);
-    TexCoord = vec3(a_texCoord, 1.0f) * texture_model;
+    vec4 pos = model * vec4(a_position, 1.0f);
+    gl_Position = pos;
+    TexCoord = (texture_model * vec4(a_texCoord, 1.0f, 1.0f)).xy;
 }

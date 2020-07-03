@@ -39,12 +39,12 @@ Entity *EntitySerializer::from(std::istringstream &in) {
         }
 
         if (attribute == "colliderTriangle") {
-            Vec2 v0, v1, v2;
+            glm::vec2 v0, v1, v2;
             in >> v0.x >> v0.y;
             in >> v1.x >> v1.y;
             in >> v2.x >> v2.y;
 
-            std::vector<Vec2> vertices = {v0, v1, v2};
+            std::vector<glm::vec2> vertices = {v0, v1, v2};
 
             entity->addComponent<CollisionComponent>(vertices);
         }

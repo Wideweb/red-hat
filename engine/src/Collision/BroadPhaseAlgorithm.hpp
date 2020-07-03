@@ -2,7 +2,7 @@
 
 #include "AABB.hpp"
 #include "CollisionShape.hpp"
-#include "Math.hpp"
+
 #include <vector>
 
 namespace Engine {

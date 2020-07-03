@@ -90,5 +90,8 @@ find_package(SDL2 REQUIRED)
 target_include_directories(engine PRIVATE ${SDL2_INCLUDE_DIRS})
 target_link_libraries(engine PRIVATE ${SDL2_LIBRARIES})
 
+find_package(glm REQUIRED)
+target_link_libraries(engine PUBLIC glm)
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
 target_link_libraries(engine PRIVATE imgui)

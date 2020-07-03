@@ -4,7 +4,10 @@
 #include "LocationComponent.hpp"
 #include "ObstacleComponent.hpp"
 #include "VelocityComponent.hpp"
+
 #include <cmath>
+#include <glm/geometric.hpp>
+#include <glm/vec2.hpp>
 
 namespace Engine {
 
@@ -23,17 +26,17 @@ void CollisionSystem::exec(EntityManager &entities) {
 
         collision->entity = nullptr;
 
-        Vec2 move(location->x, location->y);
+        glm::vec2 move(location->x, location->y);
 
         if (entity->hasComponent<VelocityComponent>()) {
             auto velocity = entity->getComponent<VelocityComponent>();
-            move = move + Vec2(velocity->x, velocity->y);
+            move = move + glm::vec2(velocity->x, velocity->y);
         }
 
-        std::vector<Vec2> vertices;
+        std::vector<glm::vec2> vertices;
         std::transform(collision->vertices.begin(), collision->vertices.end(),
                        std::back_inserter(vertices),
-                       [&](Vec2 &v) { return v + move; });
+                       [&](glm::vec2 &v) { return v + move; });
 
         colliders.emplace_back(entity->getName(), vertices,
                                entity->hasComponent<ObstacleComponent>());
@@ -52,9 +55,8 @@ void CollisionSystem::exec(EntityManager &entities) {
         auto velocity = entity->getComponent<VelocityComponent>();
         auto collision = entity->getComponent<CollisionComponent>();
 
-        Vec2 gravity(0, -1);
-        float cos = gravity.dot(result.mtv) * (gravity.inverseMagnitude() *
-                                               result.mtv.inverseMagnitude());
+        glm::vec2 gravity(0, -1);
+        float cos = glm::dot(gravity, glm::normalize(result.mtv));
 
         if (cos < -0.7) {
             location->y += velocity->y;

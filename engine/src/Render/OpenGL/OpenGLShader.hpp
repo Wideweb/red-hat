@@ -23,8 +23,7 @@ class OpenGLShader : public Shader {
                            float value2) override;
     virtual void setFloat3(const std::string &name, float value, float value2,
                            float value3) override;
-    virtual void setMatrix4(const std::string &name,
-                            const std::vector<float> &matrix) override;
+    virtual void setMatrix4(const std::string &name, float *matrix) override;
     virtual void setMatrix2x3(const std::string &name,
                               const std::vector<float> &matrix) override;
     virtual void setMatrix2(const std::string &name,

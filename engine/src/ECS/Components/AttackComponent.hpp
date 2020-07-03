@@ -3,17 +3,19 @@
 #include "Entity.hpp"
 #include "Math.hpp"
 
+#include <glm/vec2.hpp>
+
 namespace Engine {
 
 class AttackComponent : public Component {
   public:
-    std::vector<Vec2> vertices;
+    std::vector<glm::vec2> vertices;
 
     AttackComponent(const Rect &range) {
-        vertices.push_back(Vec2(range.x, range.y));
-        vertices.push_back(Vec2(range.x, range.y + range.h));
-        vertices.push_back(Vec2(range.x + range.w, range.y + range.h));
-        vertices.push_back(Vec2(range.x + range.w, range.y));
+        vertices.push_back(glm::vec2(range.x, range.y));
+        vertices.push_back(glm::vec2(range.x, range.y + range.h));
+        vertices.push_back(glm::vec2(range.x + range.w, range.y + range.h));
+        vertices.push_back(glm::vec2(range.x + range.w, range.y));
     }
 
     virtual void serialize(std::ostringstream &out) override {

@@ -19,8 +19,7 @@ class Shader {
                            float value2) = 0;
     virtual void setFloat3(const std::string &name, float value, float value2,
                            float value3) = 0;
-    virtual void setMatrix4(const std::string &name,
-                            const std::vector<float> &matrix) = 0;
+    virtual void setMatrix4(const std::string &name, float *matrix) = 0;
 
     virtual void setMatrix2x3(const std::string &name,
                               const std::vector<float> &matrix) = 0;

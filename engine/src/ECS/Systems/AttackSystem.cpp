@@ -10,7 +10,9 @@
 #include "GroupComponent.hpp"
 #include "LocationComponent.hpp"
 #include "VelocityComponent.hpp"
+
 #include <cmath>
+#include <glm/vec2.hpp>
 
 namespace Engine {
 
@@ -32,12 +34,13 @@ void AttackSystem::exec(EntityManager &entities) {
         auto dir = entity->getComponent<DirectionComponent>();
         auto group = entity->getComponent<GroupComponent>();
 
-        std::vector<Vec2> vertices;
-        Vec2 move(location->x, location->y);
+        std::vector<glm::vec2> vertices;
+        glm::vec2 move(location->x, location->y);
 
         std::transform(attack->vertices.begin(), attack->vertices.end(),
-                       std::back_inserter(vertices),
-                       [&](Vec2 &v) { return Vec2(v.x * dir->x, v.y) + move; });
+                       std::back_inserter(vertices), [&](glm::vec2 &v) {
+                           return glm::vec2(v.x * dir->x, v.y) + move;
+                       });
 
         AABB entityAABB(vertices);
 
@@ -55,13 +58,13 @@ void AttackSystem::exec(EntityManager &entities) {
             auto location_ = entity_->getComponent<LocationComponent>();
             auto collision_ = entity_->getComponent<CollisionComponent>();
 
-            std::vector<Vec2> vertices_;
-            Vec2 move_(location_->x, location_->y);
+            std::vector<glm::vec2> vertices_;
+            glm::vec2 move_(location_->x, location_->y);
 
-            std::transform(collision_->vertices.begin(),
-                           collision_->vertices.end(),
-                           std::back_inserter(vertices_),
-                           [&](Vec2 &v) { return Vec2(v.x, v.y) + move_; });
+            std::transform(
+                collision_->vertices.begin(), collision_->vertices.end(),
+                std::back_inserter(vertices_),
+                [&](glm::vec2 &v) { return glm::vec2(v.x, v.y) + move_; });
 
             AABB entityAABB_(vertices_);
 

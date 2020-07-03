@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Entity.hpp"
-#include "Math.hpp"
+
+#include <glm/vec2.hpp>
 #include <memory>
 #include <string>
 
@@ -9,7 +10,7 @@ namespace Engine {
 
 class GroundCollisionComponent : public Component {
   public:
-    std::vector<Vec2> vertices;
+    std::vector<glm::vec2> vertices;
     std::shared_ptr<Entity> entity;
     bool onGround = false;
 
@@ -23,7 +24,7 @@ class GroundCollisionComponent : public Component {
         vertices.emplace_back(wHalf, -hHalf);
     }
 
-    GroundCollisionComponent(const std::vector<Vec2> &vertices)
+    GroundCollisionComponent(const std::vector<glm::vec2> &vertices)
         : vertices(vertices) {}
 
     virtual void serialize(std::ostringstream &out) override {

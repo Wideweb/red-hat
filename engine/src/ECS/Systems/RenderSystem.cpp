@@ -12,6 +12,10 @@
 #include "TextureComponent.hpp"
 #include "cmath"
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/mat4x4.hpp>
+
 namespace Engine {
 
 void RenderSystem::exec(EntityManager &entities) {
@@ -32,8 +36,8 @@ void RenderSystem::exec(EntityManager &entities) {
                 continue;
             }
 
-            auto c_location = entity->getComponent<LocationComponent>();
-            auto c_material = entity->getComponent<MaterialComponent>();
+            auto location = entity->getComponent<LocationComponent>();
+            auto material = entity->getComponent<MaterialComponent>();
 
             float paralaxScale = 1.0;
 
@@ -42,8 +46,8 @@ void RenderSystem::exec(EntityManager &entities) {
                 paralaxScale = pralax->scale;
             }
 
-            float dx = c_location->x - camera.x * paralaxScale;
-            float dy = c_location->y - camera.y * paralaxScale;
+            float dx = location->x - camera.x * paralaxScale;
+            float dy = location->y - camera.y * paralaxScale;
 
             float x = dx / windowWidth * 2.0 - 1;
             float y = dy / windowHeight * 2.0 - 1;
@@ -51,10 +55,11 @@ void RenderSystem::exec(EntityManager &entities) {
             float scaleX = c_render->width / windowWidth;
             float scaleY = c_render->height / windowHeight;
 
-            Mat2x3 scale = Mat2x3::scale(scaleX, scaleY);
-            Mat2x3 rotate = Mat2x3::rotate(c_location->angle);
-            Mat2x3 move = Mat2x3::move(Vec2(x, y));
-            Mat2x3 model = move * scale * rotate;
+            glm::mat4 model(1.0);
+            model = glm::translate(model, glm::vec3(x, y, 0));
+            model = glm::rotate(model, location->angle,
+                                glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(scaleX, scaleY, 1.0));
 
             std::shared_ptr<Shader> shader;
 
@@ -63,17 +68,16 @@ void RenderSystem::exec(EntityManager &entities) {
             } else {
                 shader = shaders.get("plain-with-light");
 
-                shader->setFloat3("material.ambient", c_material->ambient.x,
-                                  c_material->ambient.y, c_material->ambient.z);
-                shader->setFloat3("material.diffuse", c_material->diffuse.x,
-                                  c_material->diffuse.y, c_material->diffuse.z);
-                shader->setFloat3("material.specular", c_material->specular.x,
-                                  c_material->specular.y,
-                                  c_material->specular.z);
-                shader->setFloat("material.shininess", c_material->shininess);
+                shader->setFloat3("material.ambient", material->ambient.x,
+                                  material->ambient.y, material->ambient.z);
+                shader->setFloat3("material.diffuse", material->diffuse.x,
+                                  material->diffuse.y, material->diffuse.z);
+                shader->setFloat3("material.specular", material->specular.x,
+                                  material->specular.y, material->specular.z);
+                shader->setFloat("material.shininess", material->shininess);
             }
 
-            shader->setMatrix2x3("model", model.data());
+            shader->setMatrix4("model", glm::value_ptr(model));
             render.drawTriangles(shader, c_render->vertexArray);
         }
 
@@ -117,15 +121,13 @@ void RenderSystem::exec(EntityManager &entities) {
             float scaleX = location->scale * texture->width / windowWidth;
             float scaleY = location->scale * texture->height / windowHeight;
 
-            Mat2x3 scale = Mat2x3::scale(scaleX, scaleY);
-            Mat2x3 rotate = Mat2x3::rotate(location->angle);
-            Mat2x3 move = Mat2x3::move(Vec2(x, y));
-            Mat2x3 model = move * scale * rotate;
+            glm::mat4 model(1.0);
+            model = glm::translate(model, glm::vec3(x, y, 0.0f));
+            model = glm::rotate(model, location->angle,
+                                glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(scaleX, scaleY, 1.0));
 
-            Mat2x3 textureModel = Mat2x3::identity();
-            if (direction->x > 0) {
-                textureModel = Mat2x3::flipY();
-            }
+            glm::mat4 textureModel(1.0);
 
             if (entity->hasComponent<FrameAnimationComponent>()) {
                 auto animation =
@@ -139,7 +141,8 @@ void RenderSystem::exec(EntityManager &entities) {
 
                 float y = current.y;
 
-                textureModel = Mat2x3::move(Vec2(x, y)) * textureModel;
+                textureModel =
+                    glm::translate(textureModel, glm::vec3(x, y, 0.0f));
             }
 
             if (entity->hasComponent<FrameComponent>()) {
@@ -147,7 +150,13 @@ void RenderSystem::exec(EntityManager &entities) {
 
                 float x = texture->source.w * frame->index;
 
-                textureModel = Mat2x3::move(Vec2(x, 1.0)) * textureModel;
+                textureModel =
+                    glm::translate(textureModel, glm::vec3(x, 0.0f, 0.0f));
+            }
+
+            if (direction->x > 0) {
+                textureModel = glm::rotate(textureModel, 3.14f,
+                                           glm::vec3(0.0f, 1.0f, 0.0f));
             }
 
             std::shared_ptr<Shader> shader;
@@ -166,8 +175,8 @@ void RenderSystem::exec(EntityManager &entities) {
                 shader->setFloat("material.shininess", material->shininess);
             }
 
-            shader->setMatrix2x3("model", model.data());
-            shader->setMatrix2x3("texture_model", textureModel.data());
+            shader->setMatrix4("model", glm::value_ptr(model));
+            shader->setMatrix4("texture_model", glm::value_ptr(textureModel));
             shader->setFloat("alpha", texture->alpha);
 
             render.drawTexture(shader, texture->vertexArray,

@@ -6,7 +6,9 @@
 #include "LocationComponent.hpp"
 #include "ObstacleComponent.hpp"
 #include "VelocityComponent.hpp"
+
 #include <cmath>
+#include <glm/vec2.hpp>
 
 namespace Engine {
 
@@ -20,12 +22,12 @@ void GroundCollisionSystem::exec(EntityManager &entities) {
         auto collision = entity->getComponent<CollisionComponent>();
         auto location = entity->getComponent<LocationComponent>();
 
-        Vec2 move(location->x, location->y);
+        glm::vec2 move(location->x, location->y);
 
-        std::vector<Vec2> vertices;
+        std::vector<glm::vec2> vertices;
         std::transform(collision->vertices.begin(), collision->vertices.end(),
                        std::back_inserter(vertices),
-                       [&](Vec2 &v) { return v + move; });
+                       [&](glm::vec2 &v) { return v + move; });
 
         groundColliders.emplace_back(entity->getName(), vertices, true);
     }
@@ -41,12 +43,12 @@ void GroundCollisionSystem::exec(EntityManager &entities) {
 
         collision->entity = nullptr;
 
-        Vec2 move(location->x, location->y);
+        glm::vec2 move(location->x, location->y);
 
-        std::vector<Vec2> vertices;
+        std::vector<glm::vec2> vertices;
         std::transform(collision->vertices.begin(), collision->vertices.end(),
                        std::back_inserter(vertices),
-                       [&](Vec2 &v) { return v + move; });
+                       [&](glm::vec2 &v) { return v + move; });
 
         CollisionShape collider(entity->getName(), vertices, false);
         collision->onGround = false;

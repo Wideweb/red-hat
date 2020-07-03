@@ -146,12 +146,11 @@ void OpenGLShader::setFloat3(const std::string &name, float value1,
     GL_CHECK();
 }
 
-void OpenGLShader::setMatrix4(const std::string &name,
-                              const std::vector<float> &matrix) {
+void OpenGLShader::setMatrix4(const std::string &name, float *matrix) {
     bind();
     GLint location = glGetUniformLocation(m_Program, name.c_str());
     GL_CHECK();
-    glUniformMatrix4fv(location, 1, GL_FALSE, matrix.data());
+    glUniformMatrix4fv(location, 1, GL_FALSE, matrix);
     GL_CHECK();
 }
 
