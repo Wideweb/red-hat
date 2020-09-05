@@ -22,64 +22,49 @@ void RenderSystem::exec(EntityManager &entities) {
     auto &render = Application::get().getRender();
     auto &window = Application::get().getWindow();
     auto &camera = Application::get().getCamera();
-    auto &shaders = Application::get().getShaders();
     auto &textures = Application::get().getTextures();
 
     float windowWidth = static_cast<float>(window.getWidth());
     float windowHeight = static_cast<float>(window.getHeight());
 
     for (auto entity : entities.getAll()) {
-        if (entity->hasComponent<RenderComponent>()) {
-            auto c_render = entity->getComponent<RenderComponent>();
+        // if (entity->hasComponent<RenderComponent>()) {
+        //     auto c_render = entity->getComponent<RenderComponent>();
 
-            if (!c_render->isActive) {
-                continue;
-            }
+        //     if (!c_render->isActive) {
+        //         continue;
+        //     }
 
-            auto location = entity->getComponent<LocationComponent>();
-            auto material = entity->getComponent<MaterialComponent>();
+        //     auto location = entity->getComponent<LocationComponent>();
+        //     auto material =
+        //     entity->getComponent<MaterialComponent>()->material;
 
-            float paralaxScale = 1.0;
+        //     float paralaxScale = 1.0;
 
-            if (entity->hasComponent<ParalaxScrollingComponent>()) {
-                auto pralax = entity->getComponent<ParalaxScrollingComponent>();
-                paralaxScale = pralax->scale;
-            }
+        //     if (entity->hasComponent<ParalaxScrollingComponent>()) {
+        //         auto pralax =
+        //         entity->getComponent<ParalaxScrollingComponent>();
+        //         paralaxScale = pralax->scale;
+        //     }
 
-            float dx = location->x - camera.x * paralaxScale;
-            float dy = location->y - camera.y * paralaxScale;
+        //     float dx = location->x - camera.x * paralaxScale;
+        //     float dy = location->y - camera.y * paralaxScale;
 
-            float x = dx / windowWidth * 2.0 - 1;
-            float y = dy / windowHeight * 2.0 - 1;
+        //     float x = dx / windowWidth * 2.0 - 1;
+        //     float y = dy / windowHeight * 2.0 - 1;
 
-            float scaleX = c_render->width / windowWidth;
-            float scaleY = c_render->height / windowHeight;
+        //     float scaleX = c_render->width / windowWidth;
+        //     float scaleY = c_render->height / windowHeight;
 
-            glm::mat4 model(1.0);
-            model = glm::translate(model, glm::vec3(x, y, 0));
-            model = glm::rotate(model, location->angle,
-                                glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, glm::vec3(scaleX, scaleY, 1.0));
+        //     glm::mat4 model(1.0);
+        //     model = glm::translate(model, glm::vec3(x, y, 0));
+        //     model = glm::rotate(model, location->angle,
+        //                         glm::vec3(0.0f, 0.0f, 1.0f));
+        //     model = glm::scale(model, glm::vec3(scaleX, scaleY, 1.0));
 
-            std::shared_ptr<Shader> shader;
-
-            if (entity->hasComponent<IgnoreLightComponent>()) {
-                shader = shaders.get("plain");
-            } else {
-                shader = shaders.get("plain-with-light");
-
-                shader->setFloat3("material.ambient", material->ambient.x,
-                                  material->ambient.y, material->ambient.z);
-                shader->setFloat3("material.diffuse", material->diffuse.x,
-                                  material->diffuse.y, material->diffuse.z);
-                shader->setFloat3("material.specular", material->specular.x,
-                                  material->specular.y, material->specular.z);
-                shader->setFloat("material.shininess", material->shininess);
-            }
-
-            shader->setMatrix4("model", glm::value_ptr(model));
-            render.drawTriangles(shader, c_render->vertexArray);
-        }
+        //     render.drawQuad(c_render->vertices, c_render->color, model,
+        //                     material);
+        // }
 
         if (entity->hasComponent<TextureComponent>()) {
             auto texture = entity->getComponent<TextureComponent>();
@@ -88,7 +73,7 @@ void RenderSystem::exec(EntityManager &entities) {
                 continue;
             }
 
-            auto material = entity->getComponent<MaterialComponent>();
+            auto material = entity->getComponent<MaterialComponent>()->material;
             auto location = entity->getComponent<LocationComponent>();
             auto direction = entity->getComponent<DirectionComponent>();
 
@@ -159,28 +144,8 @@ void RenderSystem::exec(EntityManager &entities) {
                                            glm::vec3(0.0f, 1.0f, 0.0f));
             }
 
-            std::shared_ptr<Shader> shader;
-
-            if (entity->hasComponent<IgnoreLightComponent>()) {
-                shader = shaders.get("texture");
-            } else {
-                shader = shaders.get("texture-with-light");
-
-                shader->setFloat3("material.ambient", material->ambient.x,
-                                  material->ambient.y, material->ambient.z);
-                shader->setFloat3("material.diffuse", material->diffuse.x,
-                                  material->diffuse.y, material->diffuse.z);
-                shader->setFloat3("material.specular", material->specular.x,
-                                  material->specular.y, material->specular.z);
-                shader->setFloat("material.shininess", material->shininess);
-            }
-
-            shader->setMatrix4("model", glm::value_ptr(model));
-            shader->setMatrix4("texture_model", glm::value_ptr(textureModel));
-            shader->setFloat("alpha", texture->alpha);
-
-            render.drawTexture(shader, texture->vertexArray,
-                               textures.get(texture->name));
+            render.drawTexture(texture->vertices, model, textureModel, material,
+                               textures.get(texture->name), texture->alpha);
         }
     }
 }

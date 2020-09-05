@@ -17,6 +17,8 @@ class OpenGLTexture : public Texture {
     virtual void bind() override;
     virtual void unbind() override;
 
+    virtual uint32_t getId() override { return m_TextureID; };
+
   private:
     bool load(const std::string &path);
 };

@@ -3,8 +3,12 @@
 
 namespace Engine {
 
-VertexBuffer *VertexBuffer::create(const std::vector<float> &vertices) {
-    return new OpenGLVertexBuffer(vertices);
+VertexBuffer *VertexBuffer::create(uint32_t size) {
+    return new OpenGLVertexBuffer(size);
+}
+
+VertexBuffer *VertexBuffer::create(float *data, uint32_t size) {
+    return new OpenGLVertexBuffer(data, size);
 }
 
 IndexBuffer *IndexBuffer::create(const std::vector<uint32_t> &indexes) {

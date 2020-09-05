@@ -2,7 +2,6 @@
 #include "Application.hpp"
 #include "ECS.hpp"
 #include "EntitySerializer.hpp"
-#include "Math.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -19,7 +18,6 @@ Loader::~Loader() {}
 void Loader::load(const std::string &path) {
     auto &app = Application::get();
     auto &textures = app.getTextures();
-    auto &shaders = app.getShaders();
     auto &sound = app.getSound();
 
     std::ifstream in(path, std::ios::in | std::ios::binary);
@@ -36,12 +34,6 @@ void Loader::load(const std::string &path) {
             std::string id, src;
             in >> id >> src;
             sound.add(id, src);
-        }
-
-        if (attribute == "shader") {
-            std::string id, vertext, fragment;
-            in >> id >> vertext >> fragment;
-            shaders.load(id, vertext, fragment);
         }
 
         if (attribute == "entities") {

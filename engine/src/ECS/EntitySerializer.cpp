@@ -1,6 +1,8 @@
 #include "EntitySerializer.hpp"
 #include "AnimationLoader.hpp"
 
+#include <glm/vec3.hpp>
+
 namespace Engine {
 
 Entity *EntitySerializer::from(std::istringstream &in) {
@@ -59,10 +61,11 @@ Entity *EntitySerializer::from(std::istringstream &in) {
 
         if (attribute == "render") {
             int w, h;
-            Vec3 color;
+            glm::vec4 color;
 
             in >> w >> h;
             in >> color.x >> color.y >> color.z;
+            color.a = 1.0f;
 
             entity->addComponent<RenderComponent>(w, h, color);
             entity->addComponent<MaterialComponent>();
@@ -89,50 +92,34 @@ Entity *EntitySerializer::from(std::istringstream &in) {
             in >> r >> g >> b >> shininess;
 
             auto material = entity->getComponent<MaterialComponent>();
-            material->shininess = shininess;
-            material->ambient = Vec3(r, g, b);
-            material->diffuse = Vec3(r, g, b);
-            material->specular = Vec3(r, g, b);
+            material->material = {.ambient = glm::vec3(r, g, b),
+                                  .diffuse = glm::vec3(r, g, b),
+                                  .specular = glm::vec3(r, g, b),
+                                  .shininess = shininess};
         }
 
         if (attribute == "pointLight") {
-            Vec3 ambient;
-            Vec3 diffuse;
-            Vec3 specular;
-            float constant;
-            float linear;
-            float quadratic;
+            PointLight light;
 
-            in >> ambient.x >> ambient.y >> ambient.z;
-            in >> diffuse.x >> diffuse.y >> diffuse.z;
-            in >> specular.x >> specular.y >> specular.z;
-            in >> constant >> linear >> quadratic;
+            in >> light.ambient.x >> light.ambient.y >> light.ambient.z;
+            in >> light.diffuse.x >> light.diffuse.y >> light.diffuse.z;
+            in >> light.specular.x >> light.specular.y >> light.specular.z;
+            in >> light.constant >> light.linear >> light.quadratic;
 
-            entity->addComponent<PointLightComponent>(
-                ambient, diffuse, specular, constant, linear, quadratic);
+            entity->addComponent<PointLightComponent>(light);
         }
 
         if (attribute == "spotLight") {
-            Vec3 ambient;
-            Vec3 diffuse;
-            Vec3 specular;
-            float constant;
-            float linear;
-            float quadratic;
-            Vec2 direction;
-            float cutOff;
-            float outerCutOff;
+            SpotLight light;
 
-            in >> ambient.x >> ambient.y >> ambient.z;
-            in >> diffuse.x >> diffuse.y >> diffuse.z;
-            in >> specular.x >> specular.y >> specular.z;
-            in >> constant >> linear >> quadratic;
-            in >> direction.x >> direction.y;
-            in >> cutOff >> outerCutOff;
+            in >> light.ambient.x >> light.ambient.y >> light.ambient.z;
+            in >> light.diffuse.x >> light.diffuse.y >> light.diffuse.z;
+            in >> light.specular.x >> light.specular.y >> light.specular.z;
+            in >> light.constant >> light.linear >> light.quadratic;
+            in >> light.direction.x >> light.direction.y;
+            in >> light.cutOff >> light.outerCutOff;
 
-            entity->addComponent<SpotLightComponent>(
-                ambient, diffuse, specular, constant, linear, quadratic,
-                direction, cutOff, outerCutOff);
+            entity->addComponent<SpotLightComponent>(light);
         }
 
         if (attribute == "ignoreLight") {

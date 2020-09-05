@@ -11,6 +11,8 @@ class Texture {
     virtual void bind() = 0;
     virtual void unbind() = 0;
 
+    virtual uint32_t getId() = 0;
+
     static Texture *create(const std::string &path);
     static Texture *create(const void *pixels, const size_t width,
                            const size_t height);

@@ -84,19 +84,19 @@ void AnimationSystem::exec(EntityManager &entities) {
                     texture->alpha += step.value;
                     break;
                 case AnimationProperty::Diffuse:
-                    light->diffuse.x += step.value;
-                    light->diffuse.y += step.value;
-                    light->diffuse.z += step.value;
+                    light->light.diffuse.x += step.value;
+                    light->light.diffuse.y += step.value;
+                    light->light.diffuse.z += step.value;
                     break;
                 case AnimationProperty::Specular:
-                    light->specular.x += step.value;
-                    light->specular.y += step.value;
-                    light->specular.z += step.value;
+                    light->light.specular.x += step.value;
+                    light->light.specular.y += step.value;
+                    light->light.specular.z += step.value;
                     break;
                 case AnimationProperty::Ambient:
-                    light->ambient.x += step.value;
-                    light->ambient.y += step.value;
-                    light->ambient.z += step.value;
+                    light->light.ambient.x += step.value;
+                    light->light.ambient.y += step.value;
+                    light->light.ambient.z += step.value;
                     break;
 
                 default:

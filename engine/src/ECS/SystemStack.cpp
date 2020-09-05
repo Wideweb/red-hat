@@ -8,7 +8,6 @@
 #include "EntityManager.hpp"
 #include "GroundCollisionSystem.hpp"
 #include "LightSystem.hpp"
-#include "MorphingSystem.hpp"
 #include "MoveSystem.hpp"
 #include "PhysicsSystem.hpp"
 #include "RenderSystem.hpp"
@@ -28,11 +27,10 @@ SystemStack::SystemStack() {
     m_Systems.push_back(new GroundCollisionSystem());
     m_Systems.push_back(new MoveSystem());
     m_Systems.push_back(new CameraSystem());
-    m_Systems.push_back(new RenderSystem());
-    m_Systems.push_back(new MorphingSystem());
-    m_Systems.push_back(new AnimationSystem());
     m_Systems.push_back(new LightSystem());
     m_Systems.push_back(new SpotLightSystem());
+    m_Systems.push_back(new RenderSystem());
+    m_Systems.push_back(new AnimationSystem());
     m_Systems.push_back(new EmitterSystem());
 }
 

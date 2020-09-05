@@ -1,40 +1,30 @@
 #pragma once
 
 #include "Entity.hpp"
-#include "Math.hpp"
+#include "Render.hpp"
 
 namespace Engine {
 
 class SpotLightComponent : public Component {
   public:
-    Vec3 ambient;
-    Vec3 diffuse;
-    Vec3 specular;
-    Vec2 direction;
-    float constant = 0.2f;
-    float linear = 0;
-    float quadratic = 0.4;
-    float cutOff;
-    float outerCutOff;
+    SpotLight light;
 
-    SpotLightComponent(const Vec3 &ambient, const Vec3 &diffuse,
-                       const Vec3 &specular, float constant, float linear,
-                       float quadratic, const Vec2 &direction, float cutOff,
-                       float outerCutOff)
-        : ambient(ambient), diffuse(diffuse), specular(specular),
-          constant(constant), linear(linear), quadratic(quadratic),
-          direction(direction), cutOff(cutOff), outerCutOff(outerCutOff) {}
+    SpotLightComponent(const SpotLight &light) : light(light) {}
 
     virtual void serialize(std::ostringstream &out) override {
         out << "spotLight ";
-        out << ambient << " ";
-        out << diffuse << " ";
-        out << direction << " ";
-        out << constant << " ";
-        out << linear << " ";
-        out << quadratic << " ";
-        out << cutOff << " ";
-        out << outerCutOff << " ";
+        out << light.ambient.x << " " << light.ambient.y << " "
+            << light.ambient.z << " ";
+        out << light.diffuse.x << " " << light.diffuse.y << " "
+            << light.diffuse.z << " ";
+        out << light.specular.x << " " << light.specular.y << " "
+            << light.specular.z << " ";
+        out << light.constant << " ";
+        out << light.linear << " ";
+        out << light.quadratic << " ";
+        out << light.cutOff << " ";
+        out << light.outerCutOff << " ";
+        out << std::endl;
     }
 };
 

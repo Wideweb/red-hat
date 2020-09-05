@@ -52,8 +52,6 @@ void SDLWindow::init(const WindowProps &props) {
         "title", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, props.width,
         props.height, ::SDL_WINDOW_OPENGL | ::SDL_WINDOW_RESIZABLE);
 
-    SDL_SetHint(SDL_HINT_RENDER_VSYNC, "0");
-
     if (m_Window == nullptr) {
         const char *err_message = SDL_GetError();
         cerr << "error: failed call SDL_CreateWindow: " << err_message << endl;
@@ -102,6 +100,8 @@ void SDLWindow::init(const WindowProps &props) {
     if (gladLoadGLES2Loader(SDL_GL_GetProcAddress) == 0) {
         cerr << "failed to initialize glad" << std::endl;
     }
+
+    glDepthMask(GL_FALSE);
 }
 
 int SDLWindow::getWidth() const { return m_Props.width; }

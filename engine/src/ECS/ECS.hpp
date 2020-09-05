@@ -23,7 +23,6 @@
 #include "InteractionComponent.hpp"
 #include "LocationComponent.hpp"
 #include "MaterialComponent.hpp"
-#include "MorphingComponent.hpp"
 #include "ObstacleComponent.hpp"
 #include "ParalaxScrollingComponent.hpp"
 #include "ParentComponent.hpp"

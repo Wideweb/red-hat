@@ -13,6 +13,8 @@ GLenum getBaseType(ShaderDataType type) {
         return GL_FLOAT;
     case ShaderDataType::Float4:
         return GL_FLOAT;
+    case ShaderDataType::Int:
+        return GL_INT;
     default:
         return GL_FLOAT;
     }
@@ -42,6 +44,11 @@ void OpenGLVertexArray::addVertexBuffer(
 
     const auto &layout = vertexBuffer->getLayout();
     uint32_t index = 0;
+
+    for (auto buffer : m_VertexBuffers) {
+        index += buffer->getLayout().size();
+    }
+
     for (const auto &element : layout) {
         glEnableVertexAttribArray(index);
         GL_CHECK();
@@ -49,11 +56,17 @@ void OpenGLVertexArray::addVertexBuffer(
                               getBaseType(element.type), GL_FALSE,
                               layout.getStride(),
                               reinterpret_cast<void *>(element.offset));
+
+        if (element.instanced) {
+            glVertexAttribDivisor(index, 2);
+        }
+
         GL_CHECK();
         index++;
     }
 
     m_VertexBuffers.push_back(vertexBuffer);
+    glBindVertexArray(0);
 }
 
 void OpenGLVertexArray::setIndexBuffer(
