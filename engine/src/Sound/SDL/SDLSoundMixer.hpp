@@ -3,9 +3,9 @@
 #include "SDLSoundBuffer.hpp"
 #include "SoundMixer.hpp"
 #include <SDL.h>
-#include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace Engine {
@@ -16,7 +16,8 @@ class SDLSoundMixer : public SoundMixer {
     SDL_AudioSpec m_DeviceSpec;
 
     std::vector<std::shared_ptr<SDLSoundBuffer>> m_Sounds;
-    std::map<std::string, std::shared_ptr<SDLSoundBuffer>> m_SoundsMap;
+    std::unordered_map<std::string, std::shared_ptr<SDLSoundBuffer>>
+        m_SoundsMap;
 
   public:
     SDLSoundMixer();

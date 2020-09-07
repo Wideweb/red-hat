@@ -24,7 +24,7 @@ class FrameAnimation {
 class FrameAnimationComponent : public Component {
   private:
     std::string m_AnimationId;
-    std::map<std::string, FrameAnimation> m_Animaitions;
+    std::unordered_map<std::string, FrameAnimation> m_Animaitions;
 
   public:
     int frameIndex = 0;

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Entity.hpp"
-#include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace Engine {
@@ -11,7 +11,7 @@ namespace Engine {
 class EntityManager {
   private:
     std::vector<std::shared_ptr<Entity>> m_Entities;
-    std::map<std::string, std::shared_ptr<Entity>> m_EntitiesMap;
+    std::unordered_map<std::string, std::shared_ptr<Entity>> m_EntitiesMap;
 
   public:
     std::shared_ptr<Entity> addEntity(const std::string name) {

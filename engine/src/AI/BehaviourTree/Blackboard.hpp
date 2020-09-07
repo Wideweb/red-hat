@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Entity.hpp"
-#include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 namespace Engine {
 
-template <typename T> using BlackboardData = std::map<std::string, T>;
+template <typename T> using BlackboardData = std::unordered_map<std::string, T>;
 
 class Blackboard {
   private:

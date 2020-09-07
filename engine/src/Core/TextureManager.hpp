@@ -1,15 +1,15 @@
 #pragma once
 
 #include "Texture.hpp"
-#include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 namespace Engine {
 
 class TextureManager {
   private:
-    std::map<std::string, std::shared_ptr<Texture>> m_Map;
+    std::unordered_map<std::string, std::shared_ptr<Texture>> m_Map;
 
   public:
     void load(const std::string &name, const std::string &path);

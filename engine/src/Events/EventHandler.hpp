@@ -2,7 +2,7 @@
 #pragma once
 
 #include "EventDispatcher.hpp"
-#include <map>
+#include <unordered_map>
 #include <memory>
 
 namespace Engine {
@@ -11,7 +11,7 @@ using EventTypeId = const std::type_info *;
 
 class EventHandler {
   private:
-    std::map<EventTypeId, std::shared_ptr<IEventDispatcher>> m_dispatchers;
+    std::unordered_map<EventTypeId, std::shared_ptr<IEventDispatcher>> m_dispatchers;
 
   public:
     template <typename TEvent> void add(EventDelegate<TEvent> delegate) {

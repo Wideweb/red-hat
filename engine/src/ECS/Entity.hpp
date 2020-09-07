@@ -1,9 +1,9 @@
 #pragma once
 
-#include <map>
 #include <memory>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace Engine {
@@ -26,7 +26,8 @@ class Entity {
   private:
     std::string m_Name;
     std::vector<std::shared_ptr<Component>> m_Components;
-    std::map<const std::type_info *, std::shared_ptr<Component>> m_ComponentMap;
+    std::unordered_map<const std::type_info *, std::shared_ptr<Component>>
+        m_ComponentMap;
 
   public:
     bool isActive = true;

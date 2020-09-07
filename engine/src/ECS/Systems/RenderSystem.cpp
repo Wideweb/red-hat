@@ -49,6 +49,14 @@ void RenderSystem::exec(EntityManager &entities) {
             float dx = location->x - camera.x * paralaxScale;
             float dy = location->y - camera.y * paralaxScale;
 
+            float scaleXHalf = c_render->width / 2.0;
+            float scaleYHalf = c_render->height / 2.0;
+
+            if (dx + scaleXHalf < 0 || dx - scaleXHalf > windowWidth ||
+                dy + scaleYHalf < 0 || dy - scaleYHalf > windowHeight) {
+                continue;
+            }
+
             float x = dx / windowWidth * 2.0 - 1;
             float y = dy / windowHeight * 2.0 - 1;
 
@@ -111,12 +119,19 @@ void RenderSystem::exec(EntityManager &entities) {
                 parentY = parentLocation->y;
             }
 
-            float x = (location->x + parentX - camera.x * paralaxScale) /
-                          windowWidth * 2.0 -
-                      1;
-            float y = (location->y + parentY - camera.y * paralaxScale) /
-                          windowHeight * 2.0 -
-                      1;
+            float dx = location->x + parentX - camera.x * paralaxScale;
+            float dy = location->y + parentY - camera.y * paralaxScale;
+
+            float scaleXHalf = texture->width / 2.0;
+            float scaleYHalf = texture->height / 2.0;
+
+            if (dx + scaleXHalf < 0 || dx - scaleXHalf > windowWidth ||
+                dy + scaleYHalf < 0 || dy - scaleYHalf > windowHeight) {
+                continue;
+            }
+
+            float x = dx / windowWidth * 2.0 - 1;
+            float y = dy / windowHeight * 2.0 - 1;
 
             float scaleX = location->scale * texture->width / windowWidth;
             float scaleY = location->scale * texture->height / windowHeight;

@@ -3,12 +3,14 @@
 #include "Shader.hpp"
 #include "glad/glad.h"
 #include <string>
+#include <unordered_map>
 
 namespace Engine {
 
 class OpenGLShader : public Shader {
   private:
     GLuint m_Program;
+    std::unordered_map<std::string, GLint> m_UniformLocationMap;
 
   public:
     OpenGLShader(const std::string &vertexSrc, const std::string &fragmentSrc);
@@ -32,6 +34,7 @@ class OpenGLShader : public Shader {
   private:
     void compile(const std::string &vertexSrc, const std::string &fragmentSrc);
     GLuint compileShader(GLenum type, const std::string &source);
+    GLuint getUniformLocation(const std::string &name);
 };
 
 } // namespace Engine

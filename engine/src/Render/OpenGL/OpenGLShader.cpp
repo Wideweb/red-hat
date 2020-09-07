@@ -114,7 +114,7 @@ GLuint OpenGLShader::compileShader(GLenum type, const std::string &source) {
 
 void OpenGLShader::setInt(const std::string &name, int value) {
     bind();
-    GLint location = glGetUniformLocation(m_Program, name.c_str());
+    GLint location = getUniformLocation(name);
     GL_CHECK();
     glUniform1i(location, value);
     GL_CHECK();
@@ -122,7 +122,7 @@ void OpenGLShader::setInt(const std::string &name, int value) {
 
 void OpenGLShader::setFloat(const std::string &name, float value) {
     bind();
-    GLint location = glGetUniformLocation(m_Program, name.c_str());
+    GLint location = getUniformLocation(name);
     GL_CHECK();
     glUniform1f(location, value);
     GL_CHECK();
@@ -131,7 +131,7 @@ void OpenGLShader::setFloat(const std::string &name, float value) {
 void OpenGLShader::setFloat2(const std::string &name, float value1,
                              float value2) {
     bind();
-    GLint location = glGetUniformLocation(m_Program, name.c_str());
+    GLint location = getUniformLocation(name);
     GL_CHECK();
     glUniform2f(location, value1, value2);
     GL_CHECK();
@@ -140,7 +140,7 @@ void OpenGLShader::setFloat2(const std::string &name, float value1,
 void OpenGLShader::setFloat3(const std::string &name, float value1,
                              float value2, float value3) {
     bind();
-    GLint location = glGetUniformLocation(m_Program, name.c_str());
+    GLint location = getUniformLocation(name);
     GL_CHECK();
     glUniform3f(location, value1, value2, value3);
     GL_CHECK();
@@ -148,7 +148,7 @@ void OpenGLShader::setFloat3(const std::string &name, float value1,
 
 void OpenGLShader::setMatrix4(const std::string &name, float *matrix) {
     bind();
-    GLint location = glGetUniformLocation(m_Program, name.c_str());
+    GLint location = getUniformLocation(name);
     GL_CHECK();
     glUniformMatrix4fv(location, 1, GL_FALSE, matrix);
     GL_CHECK();
@@ -157,7 +157,7 @@ void OpenGLShader::setMatrix4(const std::string &name, float *matrix) {
 void OpenGLShader::setMatrix2x3(const std::string &name,
                                 const std::vector<float> &matrix) {
     bind();
-    GLint location = glGetUniformLocation(m_Program, name.c_str());
+    GLint location = getUniformLocation(name);
     GL_CHECK();
     glUniformMatrix2x3fv(location, 1, GL_FALSE, matrix.data());
     GL_CHECK();
@@ -166,10 +166,20 @@ void OpenGLShader::setMatrix2x3(const std::string &name,
 void OpenGLShader::setMatrix2(const std::string &name,
                               const std::vector<float> &matrix) {
     bind();
-    GLint location = glGetUniformLocation(m_Program, name.c_str());
+    GLint location = getUniformLocation(name);
     GL_CHECK();
     glUniformMatrix2fv(location, 1, GL_FALSE, matrix.data());
     GL_CHECK();
+}
+
+GLuint OpenGLShader::getUniformLocation(const std::string &name) {
+    auto it = m_UniformLocationMap.find(name);
+    if (it != m_UniformLocationMap.end()) {
+        return it->second;
+    }
+    GLuint location = glGetUniformLocation(m_Program, name.c_str());
+    m_UniformLocationMap[name] = location;
+    return location;
 }
 
 } // namespace Engine
