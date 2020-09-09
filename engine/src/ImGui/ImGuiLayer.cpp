@@ -159,7 +159,6 @@ void ImGuiLayer::onRender() {
                                       "%.3f");
                     ImGui::InputFloat("h", &texture->source.h, 0.01f, 0.01f,
                                       "%.3f");
-                    texture->update();
 
                     ImGui::End();
                 }
@@ -173,36 +172,36 @@ void ImGuiLayer::onRender() {
 
                     ImGui::Begin("Point Light");
 
-                    ImGui::InputFloat("constant", &light->constant, 0.01f, 1.0f,
-                                      "%.3f");
-                    ImGui::InputFloat("linear", &light->linear, 0.01f, 1.0f,
-                                      "%.3f");
-                    ImGui::InputFloat("quadratic", &light->quadratic, 0.01f,
+                    ImGui::InputFloat("constant", &light->light.constant, 0.01f,
                                       1.0f, "%.3f");
+                    ImGui::InputFloat("linear", &light->light.linear, 0.01f,
+                                      1.0f, "%.3f");
+                    ImGui::InputFloat("quadratic", &light->light.quadratic,
+                                      0.01f, 1.0f, "%.3f");
 
                     ImGui::Text("ambient: ");
-                    ImGui::InputFloat("ar", &light->ambient.x, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("ag", &light->ambient.y, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("ab", &light->ambient.z, 0.01f, 0.01f,
-                                      "%.3f");
+                    ImGui::InputFloat("ar", &light->light.ambient.x, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("ag", &light->light.ambient.y, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("ab", &light->light.ambient.z, 0.01f,
+                                      0.01f, "%.3f");
 
                     ImGui::Text("diffuse: ");
-                    ImGui::InputFloat("dr", &light->diffuse.x, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("dg", &light->diffuse.y, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("db", &light->diffuse.z, 0.01f, 0.01f,
-                                      "%.3f");
+                    ImGui::InputFloat("dr", &light->light.diffuse.x, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("dg", &light->light.diffuse.y, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("db", &light->light.diffuse.z, 0.01f,
+                                      0.01f, "%.3f");
 
                     ImGui::Text("specular: ");
-                    ImGui::InputFloat("sr", &light->specular.x, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("sg", &light->specular.y, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("sb", &light->specular.z, 0.01f, 0.01f,
-                                      "%.3f");
+                    ImGui::InputFloat("sr", &light->light.specular.x, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("sg", &light->light.specular.y, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("sb", &light->light.specular.z, 0.01f,
+                                      0.01f, "%.3f");
 
                     ImGui::End();
                 }
@@ -216,49 +215,49 @@ void ImGuiLayer::onRender() {
 
                     ImGui::Begin("Spot Light");
 
-                    ImGui::InputFloat("constant", &light->constant, 0.01f, 1.0f,
-                                      "%.3f");
-                    ImGui::InputFloat("linear", &light->linear, 0.01f, 1.0f,
-                                      "%.3f");
-                    ImGui::InputFloat("quadratic", &light->quadratic, 0.01f,
+                    ImGui::InputFloat("constant", &light->light.constant, 0.01f,
                                       1.0f, "%.3f");
+                    ImGui::InputFloat("linear", &light->light.linear, 0.01f,
+                                      1.0f, "%.3f");
+                    ImGui::InputFloat("quadratic", &light->light.quadratic,
+                                      0.01f, 1.0f, "%.3f");
 
                     ImGui::Text("ambient: ");
-                    ImGui::InputFloat("ar", &light->ambient.x, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("ag", &light->ambient.y, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("ab", &light->ambient.z, 0.01f, 0.01f,
-                                      "%.3f");
+                    ImGui::InputFloat("ar", &light->light.ambient.x, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("ag", &light->light.ambient.y, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("ab", &light->light.ambient.z, 0.01f,
+                                      0.01f, "%.3f");
 
                     ImGui::Text("diffuse: ");
-                    ImGui::InputFloat("dr", &light->diffuse.x, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("dg", &light->diffuse.y, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("db", &light->diffuse.z, 0.01f, 0.01f,
-                                      "%.3f");
+                    ImGui::InputFloat("dr", &light->light.diffuse.x, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("dg", &light->light.diffuse.y, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("db", &light->light.diffuse.z, 0.01f,
+                                      0.01f, "%.3f");
 
                     ImGui::Text("specular: ");
-                    ImGui::InputFloat("sr", &light->specular.x, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("sg", &light->specular.y, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("sb", &light->specular.z, 0.01f, 0.01f,
-                                      "%.3f");
+                    ImGui::InputFloat("sr", &light->light.specular.x, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("sg", &light->light.specular.y, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("sb", &light->light.specular.z, 0.01f,
+                                      0.01f, "%.3f");
 
                     ImGui::Text("direction: ");
-                    ImGui::InputFloat("dx", &light->direction.x, 0.01f, 0.01f,
-                                      "%.3f");
-                    ImGui::InputFloat("dy", &light->direction.y, 0.01f, 0.01f,
-                                      "%.3f");
+                    ImGui::InputFloat("dx", &light->light.direction.x, 0.01f,
+                                      0.01f, "%.3f");
+                    ImGui::InputFloat("dy", &light->light.direction.y, 0.01f,
+                                      0.01f, "%.3f");
 
                     ImGui::Text("cut off: ");
-                    ImGui::InputFloat("in", &light->cutOff, 0.01f, 0.01f,
+                    ImGui::InputFloat("in", &light->light.cutOff, 0.01f, 0.01f,
                                       "%.3f");
                     ImGui::Text("outer cut off: ");
-                    ImGui::InputFloat("out", &light->outerCutOff, 0.01f, 0.01f,
-                                      "%.3f");
+                    ImGui::InputFloat("out", &light->light.outerCutOff, 0.01f,
+                                      0.01f, "%.3f");
 
                     ImGui::End();
                 }
@@ -344,8 +343,8 @@ void ImGuiLayer::draw(ImDrawData *drawData) {
             vertices.push_back(b);
             vertices.push_back(a);
         }
-        std::shared_ptr<VertexBuffer> vertexBuffer(
-            VertexBuffer::create(vertices));
+        std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::create(
+            vertices.data(), vertices.size() * sizeof(float)));
 
         std::vector<uint32_t> indexes(cmdList->IdxBuffer.begin(),
                                       cmdList->IdxBuffer.end());

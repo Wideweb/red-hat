@@ -1,5 +1,7 @@
 #include "MenuItem.hpp"
 
+#include <glm/vec3.hpp>
+
 MenuItem::MenuItem(const std::string &enityId, MenuItemLinkType type,
                    std::string link)
     : type(type), link(link) {
@@ -43,32 +45,20 @@ void MenuItem::onMouseIn() {
     auto material = m_Entity->getComponent<Engine::MaterialComponent>();
     float v = 1;
 
-    material->ambient.x = v;
-    material->ambient.y = v;
-    material->ambient.z = v;
-    material->diffuse.x = v;
-    material->diffuse.y = v;
-    material->diffuse.z = v;
-    material->specular.x = v;
-    material->specular.y = v;
-    material->specular.z = v;
-    material->shininess = 0;
+    material->material.ambient = glm::vec3(v);
+    material->material.diffuse = glm::vec3(v);
+    material->material.specular = glm::vec3(v);
+    material->material.shininess = 0;
 }
 
 void MenuItem::onMouseOut() {
     auto material = m_Entity->getComponent<Engine::MaterialComponent>();
     float v = 0.5;
 
-    material->ambient.x = v;
-    material->ambient.y = v;
-    material->ambient.z = v;
-    material->diffuse.x = v;
-    material->diffuse.y = v;
-    material->diffuse.z = v;
-    material->specular.x = v;
-    material->specular.y = v;
-    material->specular.z = v;
-    material->shininess = 0;
+    material->material.ambient = glm::vec3(v);
+    material->material.diffuse = glm::vec3(v);
+    material->material.specular = glm::vec3(v);
+    material->material.shininess = 0;
 }
 
 void MenuItem::unload(Context *) {}

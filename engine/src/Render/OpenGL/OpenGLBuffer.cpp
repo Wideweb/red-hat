@@ -8,28 +8,32 @@ namespace Engine {
 // VertexBuffer /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
-OpenGLVertexBuffer::OpenGLVertexBuffer(const std::vector<float> &vertices)
-    : m_Vertices(vertices), m_Size(vertices.size() * sizeof(float)) {
-
+OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size) {
     glGenBuffers(1, &m_RendererID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+    glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+}
+
+OpenGLVertexBuffer::OpenGLVertexBuffer(float *data, uint32_t size) {
+    glGenBuffers(1, &m_RendererID);
+    GL_CHECK();
+    glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+    GL_CHECK();
+    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
     GL_CHECK();
 }
 
 OpenGLVertexBuffer::~OpenGLVertexBuffer() { glDeleteBuffers(1, &m_RendererID); }
 
-void OpenGLVertexBuffer::setVertices(const std::vector<float> &vertices) {
-    m_Vertices = vertices;
-}
-
-void OpenGLVertexBuffer::updateVertices(const std::vector<float> &vertices) {
-    setVertices(vertices);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, m_Size, vertices.data());
+void OpenGLVertexBuffer::setData(void *data, uint32_t size) {
+    glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+    GL_CHECK();
+    glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+    GL_CHECK();
 }
 
 void OpenGLVertexBuffer::bind() {
     glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-    GL_CHECK();
-    glBufferData(GL_ARRAY_BUFFER, m_Size, m_Vertices.data(), GL_STATIC_DRAW);
     GL_CHECK();
 }
 
@@ -38,7 +42,9 @@ void OpenGLVertexBuffer::unbind() {
     GL_CHECK();
 }
 
-void OpenGLVertexBuffer::setLayout(BufferLayout &layout) { m_Layout = layout; }
+void OpenGLVertexBuffer::setLayout(const BufferLayout &layout) {
+    m_Layout = layout;
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // IndexBuffer /////////////////////////////////////////////////////////////

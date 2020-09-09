@@ -1,13 +1,6 @@
 #version 330 core
 out vec4 FragColor;
 
-struct Material {
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-    float shininess;
-};
-
 struct SpotLight {
     vec2 position;
     vec2 direction;
@@ -41,14 +34,19 @@ struct PointLight {
 in vec4 Color;
 in vec2 FragPos;
 in vec3 Normal;
+in Material {
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
+}
+material;
 
 uniform int pointLightsNumber;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 uniform int spotLightsNumber;
 uniform SpotLight spotLights[NR_SPOT_LIGHTS];
-
-uniform Material material;
 
 vec4 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos);
 vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos);

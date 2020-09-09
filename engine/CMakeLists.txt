@@ -15,7 +15,6 @@ set(SOURCE_LIB
     src/Core/Layer.cpp
     src/Core/Time.cpp
     src/Core/TextureManager.cpp
-    src/Core/ShaderManager.cpp
     src/Core/File.cpp
     src/Core/Loader.cpp
     src/Animation/AnimationLoader.cpp
@@ -31,7 +30,6 @@ set(SOURCE_LIB
     src/Render/OpenGL/OpenGLVertexArray.cpp
     src/Render/OpenGL/OpenGLTexture.cpp
     src/ECS/Components/RenderComponent.cpp
-    src/ECS/Components/MorphingComponent.cpp
     src/ECS/Components/TextureComponent.cpp
     src/ECS/SystemStack.cpp
     src/ECS/EntitySerializer.cpp
@@ -40,9 +38,7 @@ set(SOURCE_LIB
     src/ECS/Systems/MoveSystem.cpp
     src/ECS/Systems/PhysicsSystem.cpp
     src/ECS/Systems/RenderSystem.cpp
-    src/ECS/Systems/MorphingSystem.cpp
     src/ECS/Systems/AnimationSystem.cpp
-    src/ECS/Systems/TextureSystem.cpp
     src/ECS/Systems/LightSystem.cpp
     src/ECS/Systems/SpotLightSystem.cpp
     src/ECS/Systems/SteeringSystem.cpp

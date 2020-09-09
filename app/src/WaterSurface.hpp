@@ -115,7 +115,7 @@ template <size_t N> class WaterSurface {
             vertices.push_back(0.5);
         }
 
-        render->vertexBuffer->updateVertices(vertices);
+        // render->vertices = vertices;
     }
 
     void splash(int index, float velocity) {

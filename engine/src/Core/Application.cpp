@@ -14,7 +14,6 @@ Application::Application() {
     m_Render = std::unique_ptr<Render>(Render::create());
     m_Camera = std::unique_ptr<Camera>(new Camera());
     m_Texture = std::unique_ptr<TextureManager>(new TextureManager());
-    m_Shades = std::unique_ptr<ShaderManager>(new ShaderManager());
     m_EventHandler = std::unique_ptr<EventHandler>(new EventHandler());
     m_Sound = std::unique_ptr<SoundMixer>(SoundMixer::create());
 
@@ -29,6 +28,7 @@ void Application::initialize() {
         std::bind(&Application::onMouseEvent, this, std::placeholders::_1));
     m_Window->setWindowEventCallback(
         std::bind(&Application::onWindowEvent, this, std::placeholders::_1));
+    m_Render->init();
     m_Sound->init();
     m_Time.init();
 }
@@ -48,7 +48,7 @@ void Application::run() {
         m_Input->update();
 
         m_Render->clear();
-
+        m_Render->beginScene();
         for (auto layer : m_LayerStack) {
             layer->onUpdate();
             if (!layer->getEntities().empty()) {
@@ -56,6 +56,7 @@ void Application::run() {
             }
             layer->onRender();
         }
+        m_Render->endScene();
 
         m_Window->swapBuffers();
     }

@@ -8,22 +8,20 @@ namespace Engine {
 class OpenGLVertexBuffer : public VertexBuffer {
   private:
     BufferLayout m_Layout;
-    std::vector<float> m_Vertices;
-    uint32_t m_Size;
     uint32_t m_RendererID;
 
   public:
-    OpenGLVertexBuffer(const std::vector<float> &vertices);
+    OpenGLVertexBuffer(uint32_t size);
+    OpenGLVertexBuffer(float *data, uint32_t size);
     virtual ~OpenGLVertexBuffer();
 
     virtual void bind() override;
     virtual void unbind() override;
 
-    virtual void setLayout(BufferLayout &layout) override;
+    virtual void setLayout(const BufferLayout &layout) override;
     virtual const BufferLayout &getLayout() const override { return m_Layout; }
 
-    virtual void setVertices(const std::vector<float> &vertices) override;
-    virtual void updateVertices(const std::vector<float> &vertices) override;
+    virtual void setData(void *data, uint32_t size) override;
 };
 
 class OpenGLIndexBuffer : public IndexBuffer {

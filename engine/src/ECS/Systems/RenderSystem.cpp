@@ -3,7 +3,6 @@
 #include "DirectionComponent.hpp"
 #include "FrameAnimationComponent.hpp"
 #include "FrameComponent.hpp"
-#include "IgnoreLightComponent.hpp"
 #include "LocationComponent.hpp"
 #include "MaterialComponent.hpp"
 #include "ParalaxScrollingComponent.hpp"
@@ -22,7 +21,6 @@ void RenderSystem::exec(EntityManager &entities) {
     auto &render = Application::get().getRender();
     auto &window = Application::get().getWindow();
     auto &camera = Application::get().getCamera();
-    auto &shaders = Application::get().getShaders();
     auto &textures = Application::get().getTextures();
 
     float windowWidth = static_cast<float>(window.getWidth());
@@ -37,7 +35,7 @@ void RenderSystem::exec(EntityManager &entities) {
             }
 
             auto location = entity->getComponent<LocationComponent>();
-            auto material = entity->getComponent<MaterialComponent>();
+            auto material = entity->getComponent<MaterialComponent>()->material;
 
             float paralaxScale = 1.0;
 
@@ -69,24 +67,8 @@ void RenderSystem::exec(EntityManager &entities) {
                                 glm::vec3(0.0f, 0.0f, 1.0f));
             model = glm::scale(model, glm::vec3(scaleX, scaleY, 1.0));
 
-            std::shared_ptr<Shader> shader;
-
-            if (entity->hasComponent<IgnoreLightComponent>()) {
-                shader = shaders.get("plain");
-            } else {
-                shader = shaders.get("plain-with-light");
-
-                shader->setFloat3("material.ambient", material->ambient.x,
-                                  material->ambient.y, material->ambient.z);
-                shader->setFloat3("material.diffuse", material->diffuse.x,
-                                  material->diffuse.y, material->diffuse.z);
-                shader->setFloat3("material.specular", material->specular.x,
-                                  material->specular.y, material->specular.z);
-                shader->setFloat("material.shininess", material->shininess);
-            }
-
-            shader->setMatrix4("model", glm::value_ptr(model));
-            render.drawTriangles(shader, c_render->vertexArray);
+            render.drawQuad(c_render->vertices, c_render->color, model,
+                            material);
         }
 
         if (entity->hasComponent<TextureComponent>()) {
@@ -96,7 +78,7 @@ void RenderSystem::exec(EntityManager &entities) {
                 continue;
             }
 
-            auto material = entity->getComponent<MaterialComponent>();
+            auto material = entity->getComponent<MaterialComponent>()->material;
             auto location = entity->getComponent<LocationComponent>();
             auto direction = entity->getComponent<DirectionComponent>();
 
@@ -174,28 +156,8 @@ void RenderSystem::exec(EntityManager &entities) {
                                            glm::vec3(0.0f, 1.0f, 0.0f));
             }
 
-            std::shared_ptr<Shader> shader;
-
-            if (entity->hasComponent<IgnoreLightComponent>()) {
-                shader = shaders.get("texture");
-            } else {
-                shader = shaders.get("texture-with-light");
-
-                shader->setFloat3("material.ambient", material->ambient.x,
-                                  material->ambient.y, material->ambient.z);
-                shader->setFloat3("material.diffuse", material->diffuse.x,
-                                  material->diffuse.y, material->diffuse.z);
-                shader->setFloat3("material.specular", material->specular.x,
-                                  material->specular.y, material->specular.z);
-                shader->setFloat("material.shininess", material->shininess);
-            }
-
-            shader->setMatrix4("model", glm::value_ptr(model));
-            shader->setMatrix4("texture_model", glm::value_ptr(textureModel));
-            shader->setFloat("alpha", texture->alpha);
-
-            render.drawTexture(shader, texture->vertexArray,
-                               textures.get(texture->name));
+            render.drawTexture(texture->vertices, model, textureModel, material,
+                               textures.get(texture->name), texture->alpha);
         }
     }
 }
