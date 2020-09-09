@@ -21,7 +21,7 @@ class OpenGLVertexBuffer : public VertexBuffer {
     virtual void setLayout(const BufferLayout &layout) override;
     virtual const BufferLayout &getLayout() const override { return m_Layout; }
 
-    virtual void setData(void *data, uint32_t size) override;
+    virtual void setData(const void *data, uint32_t size) override;
 };
 
 class OpenGLIndexBuffer : public IndexBuffer {

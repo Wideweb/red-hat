@@ -25,7 +25,7 @@ OpenGLVertexBuffer::OpenGLVertexBuffer(float *data, uint32_t size) {
 
 OpenGLVertexBuffer::~OpenGLVertexBuffer() { glDeleteBuffers(1, &m_RendererID); }
 
-void OpenGLVertexBuffer::setData(void *data, uint32_t size) {
+void OpenGLVertexBuffer::setData(const void *data, uint32_t size) {
     glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     GL_CHECK();
     glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
@@ -71,3 +71,4 @@ void OpenGLIndexBuffer::unbind() {
 }
 
 } // namespace Engine
+

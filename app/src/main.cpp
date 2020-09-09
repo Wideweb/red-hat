@@ -46,7 +46,7 @@ class MyApp : public Engine::Application {
   public:
     MyApp() {
         addLayer(new AppLayer());
-        // addLayer(new Engine::ImGuiLayer());
+        addLayer(new Engine::ImGuiLayer());
     }
 
     virtual ~MyApp() {}

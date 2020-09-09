@@ -18,8 +18,7 @@ void OpenGLRender::init() {
                                     {ShaderDataType::Float2, "a_texCoord"}});
     m_Data.vertexArray->addVertexBuffer(m_Data.vertexBuffer);
 
-    m_Data.quadBuffer.reset(
-        VertexBuffer::create(m_Data.maxQuads * sizeof(Quad)));
+    m_Data.quadBuffer.reset(VertexBuffer::create(sizeof(Quad)));
     m_Data.quadBuffer->setLayout(
         {{ShaderDataType::Float4, "a_color", true},
          {ShaderDataType::Float4, "a_model1", true},
@@ -37,22 +36,8 @@ void OpenGLRender::init() {
          {ShaderDataType::Float, "a_texIndex", true}});
     m_Data.vertexArray->addVertexBuffer(m_Data.quadBuffer);
 
-    std::vector<uint32_t> indices(m_Data.maxIndices);
-    uint32_t offset = 0;
-    for (uint32_t i = 0; i < m_Data.maxIndices; i += 6) {
-        indices[i + 0] = offset + 0;
-        indices[i + 1] = offset + 1;
-        indices[i + 2] = offset + 2;
-
-        indices[i + 3] = offset + 1;
-        indices[i + 4] = offset + 2;
-        indices[i + 5] = offset + 3;
-
-        offset += 4;
-    }
-
     std::shared_ptr<IndexBuffer> indexBuffer;
-    indexBuffer.reset(IndexBuffer::create(indices));
+    indexBuffer.reset(IndexBuffer::create({0, 1, 2, 1, 2, 3}));
     m_Data.vertexArray->setIndexBuffer(indexBuffer);
 
     std::string vertexSrc = File::read("./assets/shaders/vertex-shader.glsl");
@@ -63,32 +48,12 @@ void OpenGLRender::init() {
 }
 
 void OpenGLRender::beginScene() {
-    m_Data.indexCount = 0;
     m_Data.pointLightIndex = 0;
     m_Data.spotLightsIndex = 0;
-    m_Data.batchMap.clear();
+    m_Data.index = 0;
 }
 
-void OpenGLRender::endScene() {
-    m_Data.shader->bind();
-    m_Data.vertexArray->bind();
-
-    m_Data.shader->setInt("spotLightsNumber", m_Data.spotLightsIndex);
-    m_Data.shader->setInt("pointLightsNumber", m_Data.pointLightIndex);
-
-    for (const auto &kv : m_Data.batchMap) {
-        auto& batch = kv.second;
-        m_Data.vertexBuffer->setData(batch.vetices,
-                                     m_Data.indexCount * sizeof(QuadVertices));
-        m_Data.quadBuffer->setData(m_Data.quadPtr,
-                                   m_Data.indexCount * sizeof(Quad));
-
-        glDrawElements(GL_TRIANGLES, m_Data.indexCount * 6, GL_UNSIGNED_INT,
-                       nullptr);
-    }
-
-    GL_CHECK();
-}
+void OpenGLRender::endScene() { std::cout << m_Data.index << std::endl; }
 
 void OpenGLRender::setClearColor(float r, float g, float b, float a) {
     glClearColor(r, g, b, a);
@@ -96,6 +61,8 @@ void OpenGLRender::setClearColor(float r, float g, float b, float a) {
 }
 
 void OpenGLRender::setViewport(uint16_t width, uint16_t height) {
+    m_Width = width;
+    m_Height = height;
     glViewport(0, 0, width, height);
     GL_CHECK();
 }
@@ -108,15 +75,18 @@ void OpenGLRender::clear() {
 void OpenGLRender::drawQuad(const QuadVertices &vertices,
                             const glm::vec4 &color, const glm::mat4 &model,
                             const Material &material) {
-    // memcpy(m_Data.veticesPtr + m_Data.indexCount, vertices.data(),
-    //        sizeof(QuadVertices));
+    Quad quad;
+    quad.color = color;
+    quad.model = model;
+    quad.texIndex = -1;
+    quad.material = material;
 
-    // m_Data.quadPtr[m_Data.indexCount].color = color;
-    // m_Data.quadPtr[m_Data.indexCount].model = model;
-    // m_Data.quadPtr[m_Data.indexCount].material = material;
-    // m_Data.quadPtr[m_Data.indexCount].texIndex = -1;
+    m_Data.vertexBuffer->setData(vertices.data(), sizeof(QuadVertices));
+    m_Data.quadBuffer->setData(&quad, sizeof(Quad));
 
-    // m_Data.indexCount++;
+    this->drawTriangles(m_Data.shader, m_Data.vertexArray);
+
+    m_Data.index++;
 }
 
 void OpenGLRender::drawTexture(const QuadVertices &vertices,
@@ -125,28 +95,19 @@ void OpenGLRender::drawTexture(const QuadVertices &vertices,
                                const Material &material,
                                const std::shared_ptr<Texture> &texture,
                                float alpha) {
-    auto batchIt = m_Data.batchMap.find(texture->getId());
-    if (batchIt == m_Data.batchMap.end()) {
-        auto &batch = m_Data.batchMap[texture->getId()];
-        batch.quadPtr = new Quad[m_Data.maxQuads];
-        batch.vetices = vertices;
-        batch.textureId = texture->getId();
+    Quad quad;
+    quad.color = glm::vec4(alpha);
+    quad.model = model;
+    quad.textureModel = textureModel;
+    quad.texIndex = 0;
+    quad.material = material;
 
-        // glActiveTexture(GL_TEXTURE0 + m_Data.texIndex);
-        // texture->bind();
+    m_Data.vertexBuffer->setData(vertices.data(), sizeof(QuadVertices));
+    m_Data.quadBuffer->setData(&quad, sizeof(Quad));
 
-        // auto iStr = std::to_string(m_Data.texIndex);
-        // m_Data.shader->setInt("textures[" + iStr + "]", m_Data.texIndex);
+    this->drawTexture(m_Data.shader, m_Data.vertexArray, texture);
 
-        // m_Data.texIndex++;
-    }
-    auto &batch = m_Data.batchMap[texture->getId()];
-    batch.quadPtr[m_Data.indexCount].color = glm::vec4(alpha);
-    batch.quadPtr[m_Data.indexCount].model = model;
-    batch.quadPtr[m_Data.indexCount].textureModel = textureModel;
-    batch.quadPtr[m_Data.indexCount].material = material;
-
-    batch.indexCount++;
+    m_Data.index++;
 }
 
 void OpenGLRender::addPointLight(const PointLight &light,
@@ -169,6 +130,8 @@ void OpenGLRender::addPointLight(const PointLight &light,
                             light.quadratic);
 
     m_Data.pointLightIndex++;
+
+    m_Data.shader->setInt("pointLightsNumber", m_Data.pointLightIndex);
 }
 
 void OpenGLRender::addSpotLight(const SpotLight &light,
@@ -196,6 +159,8 @@ void OpenGLRender::addSpotLight(const SpotLight &light,
                             light.quadratic);
 
     m_Data.spotLightsIndex++;
+
+    m_Data.shader->setInt("spotLightsNumber", m_Data.spotLightsIndex);
 }
 
 void OpenGLRender::drawLines(std::shared_ptr<Shader> shader,

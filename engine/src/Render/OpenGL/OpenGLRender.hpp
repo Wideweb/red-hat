@@ -1,6 +1,5 @@
 #pragma once
 
-#include "OpenGLRenderBatch.hpp"
 #include "Render.hpp"
 #include "Shader.hpp"
 
@@ -15,40 +14,24 @@
 
 namespace Engine {
 
-struct RenderBatch {
-  public:
-    Quad *quadPtr = nullptr;
-    QuadVertices vetices;
-
-    uint32_t textureId = 0;
-    uint32_t indexCount = 0;
-
-  public:
-    ~RenderBatch() { delete[] this->quadPtr; }
-};
-
 struct RenderData {
-    static const uint32_t maxQuads = 2000;
-    static const uint32_t maxVertices = maxQuads * 4;
-    static const uint32_t maxIndices = maxQuads * 6;
-
     std::shared_ptr<VertexArray> vertexArray;
     std::shared_ptr<VertexBuffer> vertexBuffer;
     std::shared_ptr<VertexBuffer> quadBuffer;
 
     std::shared_ptr<Shader> shader;
 
-    uint32_t indexCount = 0;
-
     uint32_t pointLightIndex = 0;
     uint32_t spotLightsIndex = 0;
 
-    std::unordered_map<uint16_t, RenderBatch> batchMap;
+    uint32_t index = 0;
 };
 
 class OpenGLRender : public Render {
   private:
     RenderData m_Data;
+    uint16_t m_Width = 0;
+    uint16_t m_Height = 0;
 
   public:
     OpenGLRender();

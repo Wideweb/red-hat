@@ -38,5 +38,7 @@ void main() {
     material.shininess = a_shininess;
 
     TextureIndex = a_texIndex;
-    TexCoord = (a_texModel * vec4(a_texCoord, 1.0f, 1.0f)).xy;
+    if (a_texIndex > -1) {
+        TexCoord = (a_texModel * vec4(a_texCoord, 1.0f, 1.0f)).xy;
+    }
 }

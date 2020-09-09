@@ -1,13 +1,6 @@
 #version 330 core
 out vec4 FragColor;
 
-struct Material {
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-    float shininess;
-};
-
 struct SpotLight {
     vec2 position;
     vec2 direction;
@@ -38,9 +31,20 @@ struct PointLight {
 #define NR_POINT_LIGHTS 8
 #define NR_SPOT_LIGHTS 8
 
-in vec2 TexCoord;
 in vec2 FragPos;
+in vec2 TexCoord;
+in vec4 Color;
 in vec3 Normal;
+in Material {
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
+}
+material;
+in float TextureIndex;
+
+uniform sampler2D textures[16];
 
 uniform int pointLightsNumber;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
@@ -48,27 +52,33 @@ uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int spotLightsNumber;
 uniform SpotLight spotLights[NR_SPOT_LIGHTS];
 
-uniform sampler2D Texture;
-uniform Material material;
-
-uniform float alpha;
-
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 color);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 color);
 
 void main() {
     vec3 result = vec3(0, 0, 0);
-    vec4 color = texture(Texture, TexCoord);
 
-    for (int i = 0; i < pointLightsNumber; i++)
+    vec4 color = Color;
+    if (TextureIndex > -1) {
+        color = texture(textures[int(TextureIndex)], TexCoord);
+        color.a = color.a * Color.a;
+    }
+
+    for (int i = 0; i < pointLightsNumber; i++) {
         result +=
             CalcPointLight(pointLights[i], Normal, vec3(FragPos, 1), color.rgb);
+    }
 
-    for (int i = 0; i < spotLightsNumber; i++)
+    for (int i = 0; i < spotLightsNumber; i++) {
         result +=
             CalcSpotLight(spotLights[i], Normal, vec3(FragPos, 1), color.rgb);
+    }
 
-    FragColor = vec4(result, color.a * alpha);
+    if (pointLightsNumber == 0 && spotLightsNumber == 0) {
+        result = color.rgb;
+    }
+
+    FragColor = vec4(result, color.a);
 }
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 color) {
@@ -92,7 +102,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 color) {
     diffuse *= attenuation;
     specular *= attenuation;
 
-    return vec3(ambient + diffuse + specular);
+    return ambient + diffuse + specular;
 }
 
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 color) {
@@ -121,9 +131,9 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 color) {
     vec3 diffuse = light.diffuse * material.diffuse * diff * color;
     vec3 specular = light.specular * material.specular * spec * color;
 
-    ambient *= attenuation * intensity;
+    ambient *= attenuation;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
 
-    return vec3(ambient + diffuse + specular);
+    return ambient + diffuse + specular;
 }
